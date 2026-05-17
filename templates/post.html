@@ -4,10 +4,11 @@
 
 {%- set is_notes = current_path is starting_with("/notes") %}
 {%- if is_notes %}
-  {%- set parent_section = get_section(path="notes/_index.md", metadata_only=true) %}
+  {%- set_global parent_section = get_section(path="notes/_index.md", metadata_only=true) %}
 {%- else %}
-  {%- set parent_section = get_section(path="posts/_index.md", metadata_only=true) %}
+  {%- set_global parent_section = get_section(path="posts/_index.md", metadata_only=true) %}
 {%- endif %}
+{%- set date_fmt = parent_section.extra.date_format | default(value="%b %-d, %Y") %}
 
 {% block title %}{{ page.title }} · {{ config.title }}{% endblock title %}
 {% block body_class %}{% if is_notes %}section-notes{% else %}section-posts{% endif %} page-post{% endblock body_class %}
@@ -45,7 +46,7 @@
   <article class="post-page__main">
     <header class="post-page__head">
       <p class="post-page__meta">
-        <time datetime="{{ page.date | date(format='%Y-%m-%d') }}">{{ page.date | date(format=parent_section.extra.date_format) }}</time>
+        <time datetime="{{ page.date | date(format='%Y-%m-%d') }}">{{ page.date | date(format=date_fmt) }}</time>
         {%- if page.taxonomies.tags %}
           {%- for tag in page.taxonomies.tags | slice(end=5) %}
           <span class="sep">·</span>
