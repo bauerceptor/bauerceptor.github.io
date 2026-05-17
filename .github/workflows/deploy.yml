@@ -37,29 +37,13 @@ jobs:
           submodules: recursive   # fetches themes/serene at the pinned commit
           fetch-depth: 0
 
-      - name: Debug submodule state (fail loudly)
-        run: |
-          echo "::error title=submodule_status::$(git submodule status 2>&1 | tr '\n' '|')"
-          echo "::error title=ls_themes::$(ls -la themes/ 2>&1 | tr '\n' '|')"
-          echo "::error title=ls_themes_serene::$(ls -la themes/serene/ 2>&1 | tr '\n' '|')"
-          echo "::error title=gitmodules::$(cat .gitmodules 2>&1 | tr '\n' '|')"
-          echo "::error title=git_config_sub::$(git config --list 2>&1 | grep -i submodule | tr '\n' '|')"
-          # Don't fail this step; let the real build step decide.
-          true
-
       - name: Install Zola
         uses: taiki-e/install-action@v2
         with:
-          tool: zola@0.19.2       # pin Zola version; update deliberately
+          tool: zola@0.22.1       # pin Zola version (must satisfy theme's min_version); update deliberately
 
       - name: Build site
-        run: |
-          echo "::error title=pwd::$(pwd)"
-          echo "::error title=ls_root::$(ls -la 2>&1 | tr '\n' '|')"
-          echo "::error title=ls_themes_serene_pre::$(ls -la themes/serene/ 2>&1 | tr '\n' '|')"
-          echo "::error title=stat_theme_toml::$(stat themes/serene/theme.toml 2>&1 | tr '\n' '|')"
-          echo "::error title=zola_version::$(zola --version 2>&1)"
-          zola build
+        run: zola build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
