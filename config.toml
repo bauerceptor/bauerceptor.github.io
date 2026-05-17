@@ -56,7 +56,7 @@ links = [
     { name = "Email",    icon = "email",    url = "mailto:hassanAZIZ4884@gmail.com" },
     { name = "Scholar",  icon = "scholar",  url = "https://scholar.google.com/citations?user=PLACEHOLDER" },
     { name = "X",        icon = "twitter",  url = "https://x.com/PLACEHOLDER" },
-    { name = "LinkedIn", icon = "linkedin", url = "https://linkedin.com/in/PLACEHOLDER" },
+    { name = "LinkedIn", icon = "linkedin", url = "https://www.linkedin.com/in/hassan-aziz-382485302" },
 ]
 
 # Post / page defaults
