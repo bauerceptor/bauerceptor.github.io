@@ -1,4 +1,4 @@
-{% extends "serene/templates/base.html" %}
+{% extends "serene/templates/_base.html" %}
 {#
   templates/home.html
   Full override of Serene's home.html.
@@ -55,8 +55,8 @@
          {% if link.url is starting_with("http") %}target="_blank" rel="noopener noreferrer"{% endif %}
          aria-label="{{ link.name }}"
          title="{{ link.name }}">
-        {# inline SVG icons via Serene's icon system #}
-        {% include "serene/templates/_icon.html" %}
+        {# TODO: swap for inline SVG icons; serene v5.6.3 has no _icon.html so showing label as fallback #}
+        {{ link.name }}
       </a>
       {%- endfor %}
     </div>
