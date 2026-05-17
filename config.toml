@@ -16,11 +16,12 @@ external_links_no_follow = true
 
 [markdown.highlighting]
 # Use class-based output so our JS theme toggle can swap stylesheets.
-# Zola generates /giallo-light.css and /giallo-dark.css automatically.
-# We override these with our own versions (see static/css/giallo-light.css etc.)
-style = "class"
-light_theme = "GitHub Light"
-dark_theme = "One Dark Pro"
+# Zola generates a CSS file per theme (named after each theme).
+style = "css"
+highlight_themes_css = [
+  { theme = "inspired-github", filename = "syntax-light.css" },
+  { theme = "one-dark", filename = "syntax-dark.css" },
+]
 
 [search]
 include_title = true
