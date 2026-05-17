@@ -20,6 +20,9 @@
 <link rel="stylesheet" href="/css/menu.css">
 <link rel="stylesheet" href="/css/copy-btn.css">
 
+<!-- Theme toggle: load early (not deferred) so it can paint correct theme before content. -->
+<script src="/js/theme-toggle.js"></script>
+
 <!-- Scripts: deferred so they don't block paint -->
 <script defer src="/js/menu.js"></script>
 <script defer src="/js/copy-code.js"></script>
@@ -45,7 +48,9 @@
 <link rel="stylesheet" href="/css/resume.css">
 {% elif path is starting_with("/notes") %}
 <link rel="stylesheet" href="/css/blog-notes.css">
+<link rel="stylesheet" href="/css/posts.css">
 <link rel="stylesheet" href="/css/notes.css">
 {% elif path is starting_with("/posts") %}
 <link rel="stylesheet" href="/css/blog-notes.css">
+<link rel="stylesheet" href="/css/posts.css">
 {% endif %}

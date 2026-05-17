@@ -1,0 +1,59 @@
+{% extends "serene/templates/_base.html" %}
+
+{# Custom listing for /posts and /notes — year-grouped lab-notebook layout. #}
+
+{%- set is_notes = section.path is starting_with("/notes") %}
+
+{% block title %}{{ section.title }} · {{ config.title }}{% endblock title %}
+{% block body_class %}{% if is_notes %}section-notes{% else %}section-posts{% endif %} page-post-listing{% endblock body_class %}
+
+{% block content %}
+<div class="post-listing">
+  <header class="post-listing__head">
+    <p class="post-listing__kicker">
+      {%- if is_notes %}Speaker notes & references{% else %}Long-form writing{% endif -%}
+    </p>
+    <h1 class="post-listing__title">{{ section.title }}</h1>
+    {%- if section.description %}
+    <p class="post-listing__desc">{{ section.description }}</p>
+    {%- endif %}
+  </header>
+
+  {%- if section.pages | length == 0 %}
+  <div class="post-listing__empty">
+    <p>Nothing here yet. Writing.</p>
+  </div>
+  {%- else %}
+  {%- set_global current_year = "" %}
+  <ol class="post-listing__list">
+    {%- for post in section.pages %}
+      {%- set py = post.date | date(format="%Y") %}
+      {%- if py != current_year %}
+        {%- set_global current_year = py %}
+        <li class="post-listing__year-head"><h2>{{ py }}</h2></li>
+      {%- endif %}
+      <li class="post-row">
+        <a href="{{ post.permalink }}" class="post-row__link">
+          <div class="post-row__body">
+            <h3 class="post-row__title">{{ post.title }}</h3>
+            {%- if post.description %}
+            <p class="post-row__desc">{{ post.description | truncate(length=180) }}</p>
+            {%- endif %}
+            {%- if post.taxonomies.tags %}
+            <p class="post-row__tags">
+              {%- for tag in post.taxonomies.tags | slice(end=4) %}
+              <span>#{{ tag }}</span>
+              {%- endfor %}
+            </p>
+            {%- endif %}
+          </div>
+          <time class="post-row__date" datetime="{{ post.date | date(format='%Y-%m-%d') }}">
+            {{ post.date | date(format="%b %-d") }}
+          </time>
+        </a>
+      </li>
+    {%- endfor %}
+  </ol>
+  {%- endif %}
+</div>
+{% endblock content %}

@@ -15,28 +15,26 @@
      Change SITE_NAME per repo.
      repo1: "Your Name"
      repo2: "Class — Your Name"                                          */
-  var SITE_NAME = document.documentElement.dataset.siteName || "Your Name";
+  var SITE_NAME = document.documentElement.dataset.siteName || "Hassan Aziz";
 
   /* ── Navigation links ──────────────────────────────────────────────────
      Shared across both sites. External links get target="_blank".
      Adjust URLs after deployment.                                        */
   var NAV_LINKS = [
-    { label: "Home",       url: "https://bauerceptor.github.io/",              external: false },
-    { label: "Posts",      url: "https://bauerceptor.github.io/posts/",        external: false },
-    { label: "Notes",      url: "https://bauerceptor.github.io/notes/",        external: false },
-    { label: "Research",   url: "https://bauerceptor.github.io/research/",     external: false },
-    { label: "Projects",   url: "https://bauerceptor.github.io/projects/",     external: false },
-    { label: "Resume",     url: "https://bauerceptor.github.io/resume/",       external: false },
-    { label: "Class",      url: "https://bauerceptor.github.io/zola-class/",   external: true  },
+    { label: "Home",     url: "/",          external: false },
+    { label: "Research", url: "/research/", external: false },
+    { label: "Projects", url: "/projects/", external: false },
+    { label: "Writing",  url: "/posts/",    external: false },
+    { label: "Notes",    url: "/notes/",    external: false },
+    { label: "Resume",   url: "/resume/",   external: false },
   ];
 
   /* ── Social links ──────────────────────────────────────────────────────
      Shown at the bottom of the overlay.                                  */
   var SOCIAL_LINKS = [
-    { label: "GitHub",   url: "https://github.com/PLACEHOLDER" },
-    { label: "Email",    url: "mailto:PLACEHOLDER@example.com" },
-    { label: "Scholar",  url: "https://scholar.google.com/citations?user=PLACEHOLDER" },
-    { label: "Twitter",  url: "https://twitter.com/PLACEHOLDER" },
+    { label: "GitHub",   url: "https://github.com/bauerceptor" },
+    { label: "Email",    url: "mailto:hassanAZIZ4884@gmail.com" },
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/hassan-aziz-382485302" },
   ];
 
   /* ── Build the menu HTML ─────────────────────────────────────────────── */

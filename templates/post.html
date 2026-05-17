@@ -1,0 +1,103 @@
+{% extends "serene/templates/_base.html" %}
+
+{# Custom individual post template for /posts and /notes. Supports KaTeX. #}
+
+{%- set is_notes = current_path is starting_with("/notes") %}
+{%- if is_notes %}
+  {%- set parent_section = get_section(path="notes/_index.md", metadata_only=true) %}
+{%- else %}
+  {%- set parent_section = get_section(path="posts/_index.md", metadata_only=true) %}
+{%- endif %}
+
+{% block title %}{{ page.title }} · {{ config.title }}{% endblock title %}
+{% block body_class %}{% if is_notes %}section-notes{% else %}section-posts{% endif %} page-post{% endblock body_class %}
+
+{% block head %}
+{%- if page.extra.math %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$',  right: '$',  display: false },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '\\[', right: '\\]', display: true }
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+{%- endif %}
+{% endblock head %}
+
+{% block content %}
+{%- set show_toc = true %}
+{%- if page.extra.toc is defined %}{% set show_toc = page.extra.toc %}{% endif %}
+{%- set has_toc = show_toc and page.toc and page.toc | length > 0 %}
+
+<div class="post-page {% if has_toc %}post-page--has-toc{% endif %}">
+  <div class="post-page__hairline" aria-hidden="true"></div>
+  <div class="post-page__progress" aria-hidden="true"></div>
+
+  <article class="post-page__main">
+    <header class="post-page__head">
+      <p class="post-page__meta">
+        <time datetime="{{ page.date | date(format='%Y-%m-%d') }}">{{ page.date | date(format=parent_section.extra.date_format) }}</time>
+        {%- if page.taxonomies.tags %}
+          {%- for tag in page.taxonomies.tags | slice(end=5) %}
+          <span class="sep">·</span>
+          <a href="{{ get_url(path='tags/' ~ tag | slugify) }}">#{{ tag }}</a>
+          {%- endfor %}
+        {%- endif %}
+      </p>
+      <h1 class="post-page__title">{{ page.title }}</h1>
+      {%- if page.description %}
+      <p class="post-page__lede">{{ page.description }}</p>
+      {%- endif %}
+    </header>
+
+    <div class="prose">
+      {{ page.content | safe }}
+    </div>
+
+    {%- if page.earlier or page.later %}
+    <nav class="post-page__prev-next" aria-label="Previous and next posts">
+      <div>
+        {%- if page.later %}
+        <a href="{{ page.later.permalink }}">
+          <span class="dir">← Previous</span>
+          <span class="title">{{ page.later.title }}</span>
+        </a>
+        {%- endif %}
+      </div>
+      <div>
+        {%- if page.earlier %}
+        <a href="{{ page.earlier.permalink }}" class="right">
+          <span class="dir">Next →</span>
+          <span class="title">{{ page.earlier.title }}</span>
+        </a>
+        {%- endif %}
+      </div>
+    </nav>
+    {%- endif %}
+
+    <p class="post-page__back">
+      <a href="{{ parent_section.permalink }}">All {{ parent_section.title | lower }}</a>
+    </p>
+  </article>
+
+  {%- if has_toc %}
+  <aside class="post-page__toc" aria-label="On this page">
+    <p class="post-page__toc-label">On this page</p>
+    <ul>
+      {%- for h2 in page.toc %}
+      <li><a href="#{{ h2.id | safe }}">{{ h2.title }}</a></li>
+      {%- endfor %}
+    </ul>
+  </aside>
+  {%- endif %}
+</div>
+{% endblock content %}

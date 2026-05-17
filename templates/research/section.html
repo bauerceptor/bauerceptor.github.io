@@ -1,90 +1,92 @@
-{#
-  templates/research/section.html
-  Publication list page at /research/.
-  Extends Serene's base so we inherit the theme toggle and head.
-  Grouped by year, descending. Each paper links to its detail page.
-  Body class "section-research" triggers Frank Ruhl Libre in _custom_css.html.
-#}
 {% extends "serene/templates/_base.html" %}
 
 {% block title %}Research · {{ config.title }}{% endblock title %}
-
-{% block body_class %}section-research{% endblock body_class %}
+{% block body_class %}section-research page-research-listing{% endblock body_class %}
 
 {% block content %}
-
-<div class="research-header">
-  <h1>{{ section.title }}</h1>
-  {%- if section.description %}<p>{{ section.description }}</p>{%- endif %}
-</div>
-
-{#
-  Group pages by `extra.year`. Zola's Tera doesn't have a groupBy filter,
-  so we collect unique years first, then filter per year.
-  Pages without extra.year fall into a "Other" bucket at the end.
-#}
-{%- set_global years = [] %}
-{%- for page in section.pages %}
-  {%- set yr = page.extra.year | default(value=0) | int %}
-  {%- if yr not in years %}
-    {%- set_global years = years | concat(with=yr) %}
-  {%- endif %}
-{%- endfor %}
-
-{#- Sort years descending #}
-{%- set sorted_years = years | sort | reverse %}
-
-{%- for year in sorted_years %}
-  {%- set year_pages = section.pages | filter(attribute="extra.year", value=year) %}
-  {%- if year_pages | length > 0 %}
-
-<h2 class="pub-year">{% if year != 0 %}{{ year }}{% else %}Other{% endif %}</h2>
-
-  {%- for page in year_pages %}
-<article class="pub-card" id="{{ page.slug }}">
-
-  {%- if page.extra.status %}
-  <span class="pub-badge pub-badge--{{ page.extra.status | lower | replace(from=' ', to='-') }}">
-    {{ page.extra.status }}
-  </span>
-  {%- endif %}
-
-  <h3 class="pub-card__title">
-    <a href="{{ page.permalink }}">{{ page.title }}</a>
-  </h3>
-
-  {%- if page.extra.authors %}
-  <p class="pub-card__authors">
-    {%- for author in page.extra.authors %}
-      <span class="{% if author == config.extra.name %}pub-author--self{% endif %}">{{ author }}</span>{% if page.extra.equal_contribution and loop.index <= page.extra.equal_contribution | int %}<sup>*</sup>{% endif %}{% if not loop.last %}, {% endif %}
-    {%- endfor %}
-    {%- if page.extra.equal_contribution %}
-    <span class="pub-equal-note"><sup>*</sup> equal contribution</span>
+<div class="research-listing">
+  <header class="research-listing__head">
+    <p class="research-listing__kicker">Publications & preprints</p>
+    <h1>{{ section.title }}</h1>
+    {%- if section.description %}
+    <p class="research-listing__desc">{{ section.description }}</p>
     {%- endif %}
-  </p>
-  {%- endif %}
+  </header>
 
-  {%- if page.extra.venue %}
-  <p class="pub-card__venue">
-    <em>{{ page.extra.venue }}</em>
-    {%- if page.extra.venue_note %} · {{ page.extra.venue_note }}{%- endif %}
-  </p>
-  {%- endif %}
-
-  <div class="pub-card__links">
-    {%- if page.extra.paper_url  %}<a href="{{ page.extra.paper_url  }}" class="pub-link pub-link--paper"  target="_blank" rel="noopener">Paper</a>{%- endif %}
-    {%- if page.extra.arxiv_url  %}<a href="{{ page.extra.arxiv_url  }}" class="pub-link pub-link--arxiv"  target="_blank" rel="noopener">arXiv</a>{%- endif %}
-    {%- if page.extra.code_url   %}<a href="{{ page.extra.code_url   }}" class="pub-link pub-link--code"   target="_blank" rel="noopener">Code</a>{%- endif %}
-    {%- if page.extra.slides_url %}<a href="{{ page.extra.slides_url }}" class="pub-link pub-link--slides" target="_blank" rel="noopener">Slides</a>{%- endif %}
-    {%- if page.extra.video_url  %}<a href="{{ page.extra.video_url  }}" class="pub-link pub-link--video"  target="_blank" rel="noopener">Video</a>{%- endif %}
-    {%- if page.extra.poster_url %}<a href="{{ page.extra.poster_url }}" class="pub-link pub-link--poster" target="_blank" rel="noopener">Poster</a>{%- endif %}
-    <a href="{{ page.permalink }}" class="pub-link pub-link--detail">Details →</a>
-  </div>
-
-</article>
+  {#- Collect unique years (descending) for year-jump rail. -#}
+  {%- set_global years = [] %}
+  {%- for page in section.pages %}
+    {%- set yr = page.extra.year | default(value=0) | int %}
+    {%- if yr not in years %}
+      {%- set_global years = years | concat(with=yr) %}
+    {%- endif %}
   {%- endfor %}
+  {%- set sorted_years = years | sort | reverse %}
 
+  {%- if section.pages | length == 0 %}
+  <div class="research-listing__empty">
+    <p>No publications listed yet. Drafting.</p>
+  </div>
+  {%- else %}
+
+  <aside class="research-listing__rail" aria-label="Jump to year">
+    <p class="research-listing__rail-label">Years</p>
+    <ul>
+      {%- for year in sorted_years %}
+      <li><a href="#y{% if year != 0 %}{{ year }}{% else %}-other{% endif %}">{% if year != 0 %}{{ year }}{% else %}Other{% endif %}</a></li>
+      {%- endfor %}
+    </ul>
+  </aside>
+
+  <div class="research-listing__main">
+    {%- for year in sorted_years %}
+      {%- set year_pages = section.pages | filter(attribute="extra.year", value=year) %}
+      {%- if year_pages | length > 0 %}
+
+      <h2 class="pub-year" id="y{% if year != 0 %}{{ year }}{% else %}-other{% endif %}">{% if year != 0 %}{{ year }}{% else %}Other{% endif %}</h2>
+
+      {%- for page in year_pages %}
+      <article class="pub-card" id="{{ page.slug }}">
+        {%- if page.extra.status %}
+        <span class="pub-badge pub-badge--{{ page.extra.status | lower | replace(from=' ', to='-') }}">{{ page.extra.status }}</span>
+        {%- endif %}
+
+        <h3 class="pub-card__title">
+          <a href="{{ page.permalink }}">{{ page.title }}</a>
+        </h3>
+
+        {%- if page.extra.authors %}
+        <p class="pub-card__authors">
+          {%- for author in page.extra.authors %}
+            <span class="{% if author == config.extra.name %}pub-author--self{% endif %}">{{- author -}}</span>{% if page.extra.equal_contribution and loop.index <= page.extra.equal_contribution | int %}<sup>*</sup>{% endif %}{% if not loop.last %}, {% endif %}
+          {%- endfor %}
+          {%- if page.extra.equal_contribution %}
+          <span class="pub-equal-note"><sup>*</sup> equal contribution</span>
+          {%- endif %}
+        </p>
+        {%- endif %}
+
+        {%- if page.extra.venue %}
+        <p class="pub-card__venue">
+          <em>{{ page.extra.venue }}</em>
+          {%- if page.extra.venue_note %} · {{ page.extra.venue_note }}{%- endif %}
+        </p>
+        {%- endif %}
+
+        <div class="pub-card__links">
+          {%- if page.extra.paper_url  %}<a href="{{ page.extra.paper_url  }}" class="pub-link" target="_blank" rel="noopener">Paper</a>{%- endif %}
+          {%- if page.extra.arxiv_url  %}<a href="{{ page.extra.arxiv_url  }}" class="pub-link" target="_blank" rel="noopener">arXiv</a>{%- endif %}
+          {%- if page.extra.code_url   %}<a href="{{ page.extra.code_url   }}" class="pub-link" target="_blank" rel="noopener">Code</a>{%- endif %}
+          {%- if page.extra.slides_url %}<a href="{{ page.extra.slides_url }}" class="pub-link" target="_blank" rel="noopener">Slides</a>{%- endif %}
+          {%- if page.extra.video_url  %}<a href="{{ page.extra.video_url  }}" class="pub-link" target="_blank" rel="noopener">Video</a>{%- endif %}
+          {%- if page.extra.poster_url %}<a href="{{ page.extra.poster_url }}" class="pub-link" target="_blank" rel="noopener">Poster</a>{%- endif %}
+          <a href="{{ page.permalink }}" class="pub-link pub-link--detail">Details →</a>
+        </div>
+      </article>
+      {%- endfor %}
+      {%- endif %}
+    {%- endfor %}
+  </div>
   {%- endif %}
-{%- endfor %}
-
+</div>
 {% endblock content %}

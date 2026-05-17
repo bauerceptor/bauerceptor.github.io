@@ -1,64 +1,62 @@
-{#
-  templates/resume/page.html
-  Resume page at /resume/.
-  BelResume-inspired layout: name header, sections for experience,
-  education, skills, publications. Download button for /static/resume/*.pdf
-  Font: Carme (triggered by body class "section-resume").
-#}
 {% extends "serene/templates/_base.html" %}
 
 {% block title %}Resume · {{ config.title }}{% endblock title %}
-
-{% block body_class %}section-resume{% endblock body_class %}
+{% block body_class %}section-resume page-resume{% endblock body_class %}
 
 {% block content %}
-<div class="resume-page">
+<div class="resume-page__progress" aria-hidden="true"></div>
 
-  {# ── Header ───────────────────────────────────────────────────────────── #}
-  <header class="resume-header">
-    <div>
-      <h1 class="resume-header__name">{{ section.extra.resume_name | default(value=config.extra.name) }}</h1>
-      {%- if section.extra.resume_title %}
-      <p class="resume-header__title">{{ section.extra.resume_title }}</p>
-      {%- endif %}
-    </div>
-    <div class="resume-header__links">
+<div class="resume-page">
+  <header class="resume-page__head">
+    <p class="resume-page__kicker">Curriculum vitae</p>
+    <h1 class="resume-page__name">{{ section.extra.resume_name | default(value=config.extra.name) }}</h1>
+    {%- if section.extra.resume_title %}
+    <p class="resume-page__title">{{ section.extra.resume_title }}</p>
+    {%- endif %}
+
+    {#- Quick links: GitHub, Email, LinkedIn — skip Scholar / X in the resume header. -#}
+    <ul class="resume-page__links">
       {%- for link in config.extra.links %}
-      {%- if link.name != "Google Scholar" %}
-      <a href="{{ link.url }}"
-         {% if link.url is starting_with("http") %}target="_blank" rel="noopener"{% endif %}>
-        {{ link.name }}
-      </a>
+      {%- if link.name in ["GitHub", "Email", "LinkedIn"] %}
+      <li>
+        <a href="{{ link.url }}"
+           {% if link.url is starting_with("http") %}target="_blank" rel="noopener"{% endif %}>
+          {{ link.name }}
+        </a>
+      </li>
       {%- endif %}
       {%- endfor %}
+    </ul>
+
+    {%- if section.extra.resume_pdfs %}
+    <div class="resume-page__downloads">
+      {%- for pdf in section.extra.resume_pdfs %}
+      <a href="{{ pdf.path }}" class="resume-download" download>↓ {{ pdf.label | default(value="Download PDF") }}</a>
+      {%- endfor %}
     </div>
+    {%- endif %}
   </header>
 
-  {# ── Download button ──────────────────────────────────────────────────── #}
-  {%- if section.extra.resume_pdfs %}
-  <div style="margin-bottom:2rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
-    {%- for pdf in section.extra.resume_pdfs %}
-    <a href="{{ pdf.path }}" class="resume-download" download>
-      ↓ {{ pdf.label | default(value="Download PDF") }}
-    </a>
-    {%- endfor %}
-  </div>
-  {%- else %}
-  <a href="/resume/resume-1.pdf" class="resume-download" download>
-    ↓ Download PDF
-  </a>
+  {#- Spec sheet of facts that don't change much. -#}
+  {%- if section.extra.location or section.extra.affiliation or section.extra.focus or section.extra.languages %}
+  <dl class="resume-page__sheet">
+    {%- if section.extra.location %}
+    <div class="resume-page__row"><dt>Location</dt><dd>{{ section.extra.location }}</dd></div>
+    {%- endif %}
+    {%- if section.extra.affiliation %}
+    <div class="resume-page__row"><dt>Affiliation</dt><dd>{{ section.extra.affiliation }}</dd></div>
+    {%- endif %}
+    {%- if section.extra.focus %}
+    <div class="resume-page__row"><dt>Focus</dt><dd>{{ section.extra.focus }}</dd></div>
+    {%- endif %}
+    {%- if section.extra.languages %}
+    <div class="resume-page__row"><dt>Languages</dt><dd>{{ section.extra.languages }}</dd></div>
+    {%- endif %}
+  </dl>
   {%- endif %}
 
-  {# ── Markdown body (the actual resume content) ────────────────────────── #}
-  {#
-    The resume body in content/resume/_index.md is written in Markdown.
-    Use heading level 2 (##) for section titles — they get .resume-section
-    styling via the CSS. The prose class applies Mulish reading styles.
-    See the sample content file for the expected structure.
-  #}
-  <div class="prose">
+  <article class="prose">
     {{ section.content | safe }}
-  </div>
-
+  </article>
 </div>
 {% endblock content %}

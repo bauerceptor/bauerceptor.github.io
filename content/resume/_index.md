@@ -4,15 +4,20 @@ template = "resume/page.html"
 insert_anchor_links = "none"
 
 [extra]
-lang = "en"
-resume_name  = "Your Name"
-resume_title = "PhD Researcher in [Field] · [University]"
+lang         = "en"
+resume_name  = "Hassan Aziz"
+resume_title = "ML / robotics / systems / security researcher · builder"
 
-# List as many PDFs as you have versions.
-# Files go in static/resume/ — e.g. static/resume/resume-1.pdf
-resume_pdfs = [
-    { path = "/resume/resume-1.pdf", label = "Download CV (PDF)" },
-]
+# Spec-sheet rows — render below the header.
+location    = "—"
+affiliation = "—"
+focus       = "Machine learning, robotics, systems, security, networked systems"
+languages   = "—"
+
+# Drop PDFs in static/resume/ then list them here.
+# resume_pdfs = [
+#     { path = "/resume/hassan-aziz-cv.pdf", label = "Download CV" },
+# ]
 
 math    = false
 mermaid = false
@@ -22,64 +27,59 @@ comment = false
 
 ## Summary
 
-A short paragraph about yourself, your research focus, and what you're
-currently working on. Keep it to 3–4 sentences.
-
----
+[Two to three sentences. What you work on. What you're optimizing for right now. What you want to do next.]
 
 ## Experience
 
-**Job Title** · Organisation Name
-*Month Year – Present*
+### [Role title] · [Organisation]
+*[Month Year] – [Present or Month Year]*
 
-Brief description of what you did. Use bullet points if helpful:
+[One sentence on what the role is, then a list of what you actually shipped or learned.]
 
-- Achievement or responsibility one
-- Achievement or responsibility two
+- [Bullet — concrete achievement, project name, or responsibility]
+- [Bullet]
+- [Bullet]
 
-**Previous Role** · Previous Organisation
-*Month Year – Month Year*
+### [Previous role] · [Previous organisation]
+*[Month Year] – [Month Year]*
 
-Description here.
-
----
+[Same pattern.]
 
 ## Education
 
-**PhD in [Field]** · [University]
-*Year – Present*
+### [Degree] · [Institution]
+*[Year] – [Year or Present]*
 
-Thesis: *Your Thesis Title*. Advisor: Prof. Name.
+[Thesis / advisor / specialisation if relevant.]
 
-**MSc / BSc in [Field]** · [University]
-*Year – Year*
+### [Earlier degree] · [Institution]
+*[Year] – [Year]*
 
----
+## Selected projects
 
-## Selected Publications
+See [/projects](/projects/) for the full list. Highlights:
 
-See the [Research](/research/) page for a full list with links.
+- **[Project name]** — [one line]
+- **[Project name]** — [one line]
 
-- **Paper Title**, Author List. *Venue Year*.
-- **Paper Title**, Author List. *Venue Year*.
+## Selected publications
 
----
+See [/research](/research/) for the full list with links.
+
+- **[Paper title]**, [Author list]. *[Venue Year]*.
+- **[Paper title]**, [Author list]. *[Venue Year]*.
 
 ## Teaching
 
-- **Course Name** — [University], Semester Year (Role: TA / Instructor)
-- **Course Name** — [University], Semester Year
-
----
+- **[Course]** — [Institution], [Semester Year] (Role: [TA / Instructor])
+- **[Course]** — [Institution], [Semester Year]
 
 ## Skills
 
-`Python` `PyTorch` `JAX` `LaTeX` `Zola` `Git`
-`[Add your tools]`
+`Python` `PyTorch` `JAX` `C++` `Rust` `Linux` `Git` `LaTeX`
+`[Add your stack]`
 
----
+## Awards & service
 
-## Awards & Honours
-
-- Award Name — Organisation, Year
-- Award Name — Organisation, Year
+- [Award or honour] — [Org], [Year]
+- [Reviewing for / committee membership / community work]
