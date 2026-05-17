@@ -104,8 +104,9 @@
       background: var(--bg-2);
       border: 1px solid var(--rule);
       border-radius: 4px;
-      padding: 1rem 1rem 1rem 1.25rem;
+      padding: 1rem;
       font-size: 0.95rem;
+      line-height: 1.55;
       width: 100%;
       box-shadow: none;
       overflow: auto;
@@ -114,6 +115,8 @@
       background: transparent;
       padding: 0;
       max-height: none;
+      line-height: 1.55;
+      display: block;
     }
     .reveal :not(pre) > code {
       font-size: 0.92em;
@@ -122,14 +125,48 @@
       border-radius: 2px;
     }
 
-    /* Cumulative reveal: lines not in the current highlight step are dimmed,
-       and the currently-active line(s) keep full hljs colours. */
-    .reveal pre code.hljs .highlight-line {
-      transition: opacity 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    /* ── Reveal highlight-plugin line stepping ────────────────────────────
+       Plugin generates: <table class="hljs hljs-ln has-highlights">
+       Each line is a <tr>. Currently-highlighted lines get class .highlight-line.
+       We dim the others and add a quiet accent stripe instead of yellow. */
+    .reveal pre code.hljs.hljs-ln,
+    .reveal pre code.hljs table.hljs-ln {
+      display: table;
+      width: 100%;
+      border-collapse: collapse;
+      border-spacing: 0;
     }
-    /* Default (reveal sets these classes once highlight steps are active). */
-    .reveal pre code.hljs .highlight-line:not(.highlight-line-active) {
-      opacity: 0.28;
+    .reveal pre code.hljs tr {
+      transition: opacity 220ms cubic-bezier(0.16, 1, 0.3, 1),
+                  background 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal pre code.hljs td.hljs-ln-numbers,
+    .reveal pre code.hljs td.hljs-ln-code {
+      padding: 0;
+      vertical-align: top;
+      border: 0;
+    }
+    /* Line-number gutter, mono and dim */
+    .reveal pre code.hljs td.hljs-ln-numbers {
+      padding-right: 1rem;
+      text-align: right;
+      color: var(--fg-3);
+      user-select: none;
+      width: 2.5em;
+      white-space: nowrap;
+    }
+    /* Dim non-highlighted rows once highlight steps are active. */
+    .reveal pre code.hljs.has-highlights tr:not(.highlight-line) {
+      opacity: 0.32;
+    }
+    .reveal pre code.hljs.has-highlights tr.highlight-line {
+      opacity: 1;
+      background: transparent;
+    }
+    /* Soft accent stripe on the active row(s) instead of yellow. */
+    .reveal pre code.hljs.has-highlights tr.highlight-line td.hljs-ln-code {
+      box-shadow: inset 2px 0 0 var(--accent);
+      padding-left: 0.5em;
     }
 
     /* ── Copy-to-clipboard button on every <pre> ───────────────────────── */
