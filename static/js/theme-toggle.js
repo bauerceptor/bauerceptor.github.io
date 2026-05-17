@@ -56,6 +56,13 @@
     }
     swapHighlight(effective);
     updateMenuButton(theme);
+
+    /* Notify other scripts (e.g. mermaid-render.js) so they can re-theme. */
+    try {
+      window.dispatchEvent(new CustomEvent("theme-changed", {
+        detail: { theme: theme, effective: effective }
+      }));
+    } catch (_) { /* CustomEvent unavailable in ancient browsers */ }
   }
 
   /* ── Swap highlight stylesheets ────────────────────────────────────── */

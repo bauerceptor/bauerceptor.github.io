@@ -124,6 +124,33 @@
     margin: 0;
   }
 
+  /* Mermaid diagrams (rendered by /js/mermaid-render.js). */
+  .mermaid--rendered {
+    position: relative;
+    margin: var(--sp-5) 0;
+    padding: var(--sp-3);
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    min-height: 380px;
+  }
+  .mermaid--rendered svg { display: block; }
+  .mermaid--rendered text { font-family: var(--font-sans) !important; }
+  /* svg-pan-zoom control icons (+/-/reset) — quiet, matches site palette */
+  .svg-pan-zoom-control { transform: scale(0.85); }
+  .svg-pan-zoom-control-background { fill: var(--bg); fill-opacity: 0.9; stroke: var(--rule); }
+  .svg-pan-zoom-control-element { fill: var(--fg-2); }
+
+  /* Pre-rendered placeholder: dim until the renderer replaces it. */
+  pre.mermaid,
+  pre > code.language-mermaid,
+  .mermaid:not(.mermaid--rendered) {
+    color: var(--fg-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+
   /* Reduced motion respect. */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
