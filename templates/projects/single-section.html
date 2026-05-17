@@ -40,11 +40,11 @@
     </div>
 
     {# Group pages by extra.sidebar_section, sorted by weight #}
-    {%- set ns = namespace(seen_groups=[]) %}
+    {%- set_global seen_groups = [] %}
     {%- for p in section.pages %}
       {%- set grp = p.extra.sidebar_section | default(value="") %}
-      {%- if grp not in ns.seen_groups %}
-        {%- set ns.seen_groups = ns.seen_groups | concat(with=grp) %}
+      {%- if grp not in seen_groups %}
+        {%- set_global seen_groups = seen_groups | concat(with=grp) %}
 
         <div class="sidebar-group">
           {%- if grp != "" %}

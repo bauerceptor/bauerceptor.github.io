@@ -23,16 +23,16 @@
   so we collect unique years first, then filter per year.
   Pages without extra.year fall into a "Other" bucket at the end.
 #}
-{%- set ns = namespace(years=[]) %}
+{%- set_global years = [] %}
 {%- for page in section.pages %}
   {%- set yr = page.extra.year | default(value=0) | int %}
-  {%- if yr not in ns.years %}
-    {%- set ns.years = ns.years | concat(with=yr) %}
+  {%- if yr not in years %}
+    {%- set_global years = years | concat(with=yr) %}
   {%- endif %}
 {%- endfor %}
 
 {#- Sort years descending #}
-{%- set sorted_years = ns.years | sort | reverse %}
+{%- set sorted_years = years | sort | reverse %}
 
 {%- for year in sorted_years %}
   {%- set year_pages = section.pages | filter(attribute="extra.year", value=year) %}

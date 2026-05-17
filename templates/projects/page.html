@@ -59,12 +59,12 @@
       Pages without a label go into an implicit default group.
       Within each group, pages are already sorted by weight (Zola handles this).
     #}
-    {%- set ns = namespace(seen_groups=[]) %}
+    {%- set_global seen_groups = [] %}
 
     {%- for p in parent.pages %}
       {%- set grp = p.extra.sidebar_section | default(value="") %}
-      {%- if grp not in ns.seen_groups %}
-        {%- set ns.seen_groups = ns.seen_groups | concat(with=grp) %}
+      {%- if grp not in seen_groups %}
+        {%- set_global seen_groups = seen_groups | concat(with=grp) %}
 
         {%- if grp != "" %}
         <div class="sidebar-group">

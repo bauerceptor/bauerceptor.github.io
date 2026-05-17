@@ -1,13 +1,10 @@
-<!--
+{% extends "serene/templates/base.html" %}
+{#
   templates/home.html
   Full override of Serene's home.html.
   Extends Serene's base.html so we inherit its <head>, theme toggle,
   search wiring, and feed links — we only replace the body content.
-
-  Design: dark-pastel landing page, Quattrocento display title,
-  animated gradient text, bento project grid, random footer quotes.
--->
-{% extends "serene/templates/base.html" %}
+#}
 
 {% block title %}{{ config.title }}{% endblock title %}
 
