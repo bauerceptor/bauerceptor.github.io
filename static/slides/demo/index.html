@@ -125,49 +125,6 @@
       border-radius: 2px;
     }
 
-    /* ── Reveal highlight-plugin line stepping ────────────────────────────
-       Plugin generates: <table class="hljs hljs-ln has-highlights">
-       Each line is a <tr>. Currently-highlighted lines get class .highlight-line.
-       We dim the others and add a quiet accent stripe instead of yellow. */
-    .reveal pre code.hljs.hljs-ln,
-    .reveal pre code.hljs table.hljs-ln {
-      display: table;
-      width: 100%;
-      border-collapse: collapse;
-      border-spacing: 0;
-    }
-    .reveal pre code.hljs tr {
-      transition: opacity 220ms cubic-bezier(0.16, 1, 0.3, 1),
-                  background 220ms cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .reveal pre code.hljs td.hljs-ln-numbers,
-    .reveal pre code.hljs td.hljs-ln-code {
-      padding: 0;
-      vertical-align: top;
-      border: 0;
-    }
-    /* Line-number gutter, mono and dim */
-    .reveal pre code.hljs td.hljs-ln-numbers {
-      padding-right: 1rem;
-      text-align: right;
-      color: var(--fg-3);
-      user-select: none;
-      width: 2.5em;
-      white-space: nowrap;
-    }
-    /* Dim non-highlighted rows once highlight steps are active. */
-    .reveal pre code.hljs.has-highlights tr:not(.highlight-line) {
-      opacity: 0.32;
-    }
-    .reveal pre code.hljs.has-highlights tr.highlight-line {
-      opacity: 1;
-      background: transparent;
-    }
-    /* Soft accent stripe on the active row(s) instead of yellow. */
-    .reveal pre code.hljs.has-highlights tr.highlight-line td.hljs-ln-code {
-      box-shadow: inset 2px 0 0 var(--accent);
-      padding-left: 0.5em;
-    }
 
     /* ── Copy-to-clipboard button on every <pre> ───────────────────────── */
     .copy-btn {
@@ -410,9 +367,9 @@
           <span class="slide-id">04 · A — CODE</span>
           <h3>Code blocks</h3>
           <p style="color:var(--fg-3);font-size:1rem;margin-bottom:0.6rem;">
-            Press <code>↓</code> to walk through line by line. Earlier lines stay lit; future lines dim.
+            Syntax-highlighted with copy-to-clipboard on hover. Ligatures on.
           </p>
-<pre><code class="language-javascript" data-trim data-line-numbers="1|1-2|1-3|1-4|1-5|1-6|1-7">
+<pre><code class="language-javascript" data-trim>
 // Reveal initialised with our custom indicator
 Reveal.initialize({
   hash: true,
@@ -427,9 +384,9 @@ Reveal.initialize({
           <span class="slide-id">04 · A — WALKTHROUGH</span>
           <h3>Teaching walkthrough</h3>
           <p style="color:var(--fg-3);font-size:1rem;margin-bottom:0.6rem;">
-            Same pattern, taught function. <code>↓</code> reveals the next line; <code>↑</code> goes back.
+            Ligature samples: <code>=&gt;</code> <code>!=</code> <code>===</code> <code>-&gt;</code> <code>&lt;=</code>
           </p>
-<pre><code class="language-python" data-trim data-line-numbers="1|1-2|1-3|1-4|1-5|1-6|1-7">
+<pre><code class="language-python" data-trim>
 def gradient_descent(x, lr=0.01, steps=100):
     for _ in range(steps):
         grad = compute_gradient(x)
