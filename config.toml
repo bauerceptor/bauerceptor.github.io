@@ -53,7 +53,7 @@ sections = [
 
 links = [
     { name = "GitHub",   icon = "github",   url = "https://github.com/bauerceptor" },
-    { name = "Email",    icon = "email",    url = "mailto:abdullahahmedtanveer@gmail.com" },
+    { name = "Email",    icon = "email",    url = "mailto:hassanAZIZ4884@gmail.com" },
     { name = "Scholar",  icon = "scholar",  url = "https://scholar.google.com/citations?user=PLACEHOLDER" },
     { name = "X",        icon = "twitter",  url = "https://x.com/PLACEHOLDER" },
     { name = "LinkedIn", icon = "linkedin", url = "https://linkedin.com/in/PLACEHOLDER" },

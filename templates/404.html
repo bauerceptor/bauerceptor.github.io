@@ -1,0 +1,97 @@
+{% extends "serene/templates/_base.html" %}
+
+{% block title %}404 · {{ config.title }}{% endblock title %}
+{% block body_class %}page-404{% endblock body_class %}
+
+{% block content %}
+<main class="error-page">
+  <p class="error-page__code">HTTP/1.1 404</p>
+  <h1 class="error-page__title">Not found.</h1>
+  <p class="error-page__lede">
+    The page you requested isn't here. Either it never existed, or it moved and I didn't redirect.
+  </p>
+
+  <ul class="error-page__suggestions">
+    <li><a href="/">Home</a></li>
+    <li><a href="/research/">Research</a></li>
+    <li><a href="/projects/">Projects</a></li>
+    <li><a href="/posts/">Writing</a></li>
+    <li><a href="/notes/">Notes</a></li>
+  </ul>
+
+  <p class="error-page__hint">Or press <kbd>?</kbd> for keyboard shortcuts.</p>
+</main>
+
+<style>
+  body.page-404 .serene-header,
+  body.page-404 header.site-header { display: none; }
+
+  .error-page {
+    max-width: 60ch;
+    margin: 0 auto;
+    padding: clamp(4rem, 12vw, 8rem) clamp(1.25rem, 4vw, 2rem) var(--sp-9);
+  }
+  .error-page__code {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin: 0 0 var(--sp-5);
+  }
+  .error-page__title {
+    font-family: var(--font-serif);
+    font-variation-settings: "opsz" 72;
+    font-size: clamp(3rem, 9vw, 5rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin: 0 0 var(--sp-5);
+  }
+  .error-page__lede {
+    font-size: var(--text-lg);
+    color: var(--fg-2);
+    line-height: 1.55;
+    margin: 0 0 var(--sp-8);
+  }
+  .error-page__suggestions {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--sp-8);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3) var(--sp-5);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding-top: var(--sp-3);
+    padding-bottom: var(--sp-3);
+  }
+  .error-page__suggestions a {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--fg-2);
+    text-decoration: none;
+    transition: color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .error-page__suggestions a:hover,
+  .error-page__suggestions a:focus-visible { color: var(--accent); }
+
+  .error-page__hint {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--fg-3);
+    letter-spacing: 0.02em;
+  }
+  .error-page__hint kbd {
+    font-family: var(--font-mono);
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 1px 6px;
+    font-size: inherit;
+    color: var(--fg-2);
+  }
+</style>
+{% endblock content %}

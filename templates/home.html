@@ -92,7 +92,10 @@
       {%- set sub = get_section(path=sub_path) %}
       <li class="home-list__item home-list__item--rich">
         <div class="home-list__main">
-          <a class="home-list__link" href="{{ sub.permalink }}">{{ sub.title }}</a>
+          <a class="home-list__link" href="{{ sub.permalink }}">
+            <span class="home-list__sigil">{{ sub.extra.sigil | default(value="·") }}</span>
+            {{ sub.title }}
+          </a>
           {%- if sub.description %}
           <span class="home-list__sub">{{ sub.description | truncate(length=110) }}</span>
           {%- endif %}

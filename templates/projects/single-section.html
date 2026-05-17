@@ -1,25 +1,17 @@
-{#
-  templates/projects/single-section.html
-  The _index.md page for each individual project, e.g. /projects/demo-project/.
-  Shows the project overview text in the EasyDocs sidebar layout,
-  with the sidebar listing all doc pages in this project.
-
-  Zola renders a sub-section's _index.md with the template specified in
-  that _index.md's front matter. Set `template = "projects/single-section.html"`
-  in every project's _index.md.
-#}
 {% extends "serene/templates/_base.html" %}
 
 {% block title %}{{ section.title }} · Projects · {{ config.title }}{% endblock title %}
-
-{% block body_class %}section-projects{% endblock body_class %}
+{% block body_class %}section-projects page-project-overview{% endblock body_class %}
 
 {% block content %}
-<div class="docs-layout">
+{%- set hue = section.extra.hue | default(value="default") %}
+<div class="docs-layout" data-hue="{{ hue }}">
 
-  {# ── Top bar ──────────────────────────────────────────────────────────── #}
+  <div class="docs-hairline" data-hue="{{ hue }}" aria-hidden="true"></div>
+
   <div class="docs-topbar">
     <a href="{{ section.permalink }}" class="docs-topbar__project">
+      <span class="docs-topbar__sigil">{{ section.extra.sigil | default(value="·") }}</span>
       {{ section.title }}
     </a>
     <nav class="docs-topbar__breadcrumb" aria-label="Breadcrumb">
@@ -29,44 +21,76 @@
     </nav>
   </div>
 
-  {# ── Sidebar ──────────────────────────────────────────────────────────── #}
   <aside class="docs-sidebar" aria-label="Documentation navigation">
+    <div class="docs-sidebar__title">
+      <span class="docs-sidebar__sigil">{{ section.extra.sigil | default(value="·") }}</span>
+      <span>{{ section.title }}</span>
+    </div>
 
     <div class="sidebar-group">
-      <a href="{{ section.permalink }}"
-         class="sidebar-link sidebar-link--active">
-        Overview
+      <a href="{{ section.permalink }}" class="sidebar-link sidebar-link--active">
+        <span class="sidebar-link__num">00</span>
+        <span class="sidebar-link__label">Overview</span>
       </a>
     </div>
 
-    {# Group pages by extra.sidebar_section, sorted by weight #}
     {%- set_global seen_groups = [] %}
+    {%- set_global chapter = 0 %}
     {%- for p in section.pages %}
       {%- set grp = p.extra.sidebar_section | default(value="") %}
       {%- if grp not in seen_groups %}
         {%- set_global seen_groups = seen_groups | concat(with=grp) %}
-
         <div class="sidebar-group">
           {%- if grp != "" %}
           <span class="sidebar-group__label">{{ grp }}</span>
           {%- endif %}
           {%- for q in section.pages | filter(attribute="extra.sidebar_section", value=grp) %}
-          <a href="{{ q.permalink }}" class="sidebar-link">{{ q.title }}</a>
+            {%- set_global chapter = chapter + 1 %}
+            <a href="{{ q.permalink }}" class="sidebar-link">
+              <span class="sidebar-link__num">{% if chapter < 10 %}0{% endif %}{{ chapter }}</span>
+              <span class="sidebar-link__label">{{ q.title }}</span>
+            </a>
           {%- endfor %}
         </div>
-
       {%- endif %}
     {%- endfor %}
-
   </aside>
 
-  {# ── Main content — project overview ─────────────────────────────────── #}
   <main class="docs-content" id="main-content">
-    <h1>{{ section.title }}</h1>
+    <div class="docs-spec">
+      <span class="docs-spec__sigil">{{ section.extra.sigil | default(value="·") }}</span>
+      <h1 class="docs-spec__title">{{ section.title }}</h1>
+      {%- if section.description %}
+      <p class="docs-spec__lede">{{ section.description }}</p>
+      {%- endif %}
 
-    {%- if section.extra.category %}
-    <p class="docs-content__cat">{{ section.extra.category }}</p>
-    {%- endif %}
+      <dl class="docs-spec__sheet">
+        {%- if section.extra.category %}
+        <div class="docs-spec__row">
+          <dt>Category</dt>
+          <dd>{{ section.extra.category }}</dd>
+        </div>
+        {%- endif %}
+        {%- if section.extra.status %}
+        <div class="docs-spec__row">
+          <dt>Status</dt>
+          <dd>{{ section.extra.status }}</dd>
+        </div>
+        {%- endif %}
+        {%- if section.extra.language %}
+        <div class="docs-spec__row">
+          <dt>Language</dt>
+          <dd>{{ section.extra.language }}</dd>
+        </div>
+        {%- endif %}
+        {%- if section.extra.repo %}
+        <div class="docs-spec__row">
+          <dt>Repo</dt>
+          <dd><a href="{{ section.extra.repo }}" target="_blank" rel="noopener">{{ section.extra.repo | replace(from="https://", to="") | replace(from="http://", to="") }}</a></dd>
+        </div>
+        {%- endif %}
+      </dl>
+    </div>
 
     <div class="prose">
       {{ section.content | safe }}
@@ -77,7 +101,10 @@
       <p class="docs-quickstart__label">Start reading</p>
       <ol class="docs-quickstart__list">
         {%- for p in section.pages | slice(end=3) %}
-        <li><a href="{{ p.permalink }}">{{ p.title }}</a></li>
+        <li>
+          <span class="docs-quickstart__num">{% if loop.index < 10 %}0{% endif %}{{ loop.index }}</span>
+          <a href="{{ p.permalink }}">{{ p.title }}</a>
+        </li>
         {%- endfor %}
       </ol>
     </div>

@@ -1,37 +1,29 @@
-{#
-  templates/projects/page.html
-  Individual documentation page inside a project.
-  Renders the EasyDocs-style two-column layout:
-    left  → auto-generated sidebar from sibling pages (sorted by weight)
-    right → page content
-
-  The sidebar is built by loading the parent section and iterating its pages.
-  Pages are sorted by `weight` in front matter (lower = higher up). Pages
-  without weight are sorted alphabetically after weighted ones.
-
-  Section group labels come from `extra.sidebar_section` in each page's
-  front matter. Pages sharing the same label are visually grouped.
-#}
 {% extends "serene/templates/_base.html" %}
 
 {% block title %}{{ page.title }} · {{ config.title }}{% endblock title %}
-
-{% block body_class %}section-projects{% endblock body_class %}
+{% block body_class %}section-projects page-project-doc{% endblock body_class %}
 
 {% block content %}
-
-{#
-  Load the immediate parent section to get sibling pages for the sidebar.
-  page.ancestors contains path strings; the last one is the direct parent.
-#}
 {%- set parent_path = page.ancestors | last %}
 {%- set parent = get_section(path=parent_path) %}
+{%- set hue = parent.extra.hue | default(value="default") %}
 
-<div class="docs-layout">
+{# Compute this page's chapter number from its position in the parent's sorted pages list. #}
+{%- set_global chapter_num = 0 %}
+{%- for sibling in parent.pages %}
+  {%- if sibling.permalink == page.permalink %}
+    {%- set_global chapter_num = loop.index %}
+  {%- endif %}
+{%- endfor %}
 
-  {# ── Top bar ──────────────────────────────────────────────────────────── #}
+<div class="docs-layout" data-hue="{{ hue }}">
+
+  <div class="docs-hairline" data-hue="{{ hue }}" aria-hidden="true"></div>
+  <div class="docs-progress" aria-hidden="true"></div>
+
   <div class="docs-topbar">
     <a href="{{ parent.permalink }}" class="docs-topbar__project">
+      <span class="docs-topbar__sigil">{{ parent.extra.sigil | default(value="·") }}</span>
       {{ parent.title }}
     </a>
     <nav class="docs-topbar__breadcrumb" aria-label="Breadcrumb">
@@ -43,52 +35,50 @@
     </nav>
   </div>
 
-  {# ── Sidebar ──────────────────────────────────────────────────────────── #}
   <aside class="docs-sidebar" aria-label="Documentation navigation">
+    <div class="docs-sidebar__title">
+      <span class="docs-sidebar__sigil">{{ parent.extra.sigil | default(value="·") }}</span>
+      <span>{{ parent.title }}</span>
+    </div>
 
-    {# Section overview link #}
     <div class="sidebar-group">
       <a href="{{ parent.permalink }}"
          class="sidebar-link{% if current_path == parent.path %} sidebar-link--active{% endif %}">
-        Overview
+        <span class="sidebar-link__num">00</span>
+        <span class="sidebar-link__label">Overview</span>
       </a>
     </div>
 
-    {#
-      Group pages by extra.sidebar_section label.
-      Pages without a label go into an implicit default group.
-      Within each group, pages are already sorted by weight (Zola handles this).
-    #}
     {%- set_global seen_groups = [] %}
-
+    {%- set_global chapter = 0 %}
     {%- for p in parent.pages %}
       {%- set grp = p.extra.sidebar_section | default(value="") %}
       {%- if grp not in seen_groups %}
         {%- set_global seen_groups = seen_groups | concat(with=grp) %}
-
-        {%- if grp != "" %}
         <div class="sidebar-group">
+          {%- if grp != "" %}
           <span class="sidebar-group__label">{{ grp }}</span>
-        {%- else %}
-        <div class="sidebar-group">
-        {%- endif %}
-
-        {%- for q in parent.pages | filter(attribute="extra.sidebar_section", value=grp) %}
-          <a href="{{ q.permalink }}"
-             class="sidebar-link{% if q.permalink == page.permalink %} sidebar-link--active{% endif %}">
-            {{ q.title }}
-          </a>
-        {%- endfor %}
+          {%- endif %}
+          {%- for q in parent.pages | filter(attribute="extra.sidebar_section", value=grp) %}
+            {%- set_global chapter = chapter + 1 %}
+            <a href="{{ q.permalink }}"
+               class="sidebar-link{% if q.permalink == page.permalink %} sidebar-link--active{% endif %}">
+              <span class="sidebar-link__num">{% if chapter < 10 %}0{% endif %}{{ chapter }}</span>
+              <span class="sidebar-link__label">{{ q.title }}</span>
+            </a>
+          {%- endfor %}
         </div>
-
       {%- endif %}
     {%- endfor %}
-
   </aside>
 
-  {# ── Main content ─────────────────────────────────────────────────────── #}
   <main class="docs-content" id="main-content">
-    <h1>{{ page.title }}</h1>
+    <p class="docs-content__chapter">
+      <span>Chapter {% if chapter_num < 10 %}0{% endif %}{{ chapter_num }}</span>
+      <span class="docs-content__chapter-of">of {{ parent.pages | length }}</span>
+    </p>
+
+    <h1 class="docs-content__h1">{{ page.title }}</h1>
 
     {%- if page.description %}
     <p class="docs-content__desc">{{ page.description }}</p>
@@ -102,18 +92,34 @@
     <nav class="docs-prev-next" aria-label="Previous and next pages">
       <div>
         {%- if page.later %}
-        <a href="{{ page.later.permalink }}">← {{ page.later.title }}</a>
+        <a href="{{ page.later.permalink }}">
+          <span class="docs-prev-next__dir">← Previous</span>
+          <span class="docs-prev-next__title">{{ page.later.title }}</span>
+        </a>
         {%- endif %}
       </div>
       <div>
         {%- if page.earlier %}
-        <a href="{{ page.earlier.permalink }}">{{ page.earlier.title }} →</a>
+        <a href="{{ page.earlier.permalink }}" class="docs-prev-next__right">
+          <span class="docs-prev-next__dir">Next →</span>
+          <span class="docs-prev-next__title">{{ page.earlier.title }}</span>
+        </a>
         {%- endif %}
       </div>
     </nav>
     {%- endif %}
-
   </main>
+
+  {%- if page.toc | length > 0 %}
+  <aside class="docs-toc" aria-label="On this page">
+    <p class="docs-toc__label">On this page</p>
+    <ul class="docs-toc__list">
+      {%- for h in page.toc %}
+      <li><a href="#{{ h.id }}">{{ h.title }}</a></li>
+      {%- endfor %}
+    </ul>
+  </aside>
+  {%- endif %}
 
 </div>
 {% endblock content %}

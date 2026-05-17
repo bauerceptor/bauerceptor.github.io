@@ -72,6 +72,58 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* Custom selection — vermilion wash. */
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-fg);
+  }
+
+  /* Keyboard shortcut toast + help panel (shortcuts.js). */
+  .kb-toast {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 2000;
+    padding: 8px 12px;
+    background: var(--fg);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.04em;
+    border-radius: 2px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 180ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+  .kb-toast--in { opacity: 1; transform: translateY(0); }
+
+  .kb-help {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: oklch(15% 0.012 270 / 0.55);
+    opacity: 0;
+    transition: opacity 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .kb-help--in { opacity: 1; }
+
+  .kb-help pre {
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 24px 32px;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.7;
+    color: var(--fg);
+    margin: 0;
+  }
+
   /* Reduced motion respect. */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {

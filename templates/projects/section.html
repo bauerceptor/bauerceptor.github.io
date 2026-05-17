@@ -1,40 +1,49 @@
-{#
-  templates/projects/section.html
-  Top-level /projects/ page — lists all project sub-sections as cards.
-  Each project lives as content/projects/project-name/_index.md
-  and has its own docs pages inside.
-#}
 {% extends "serene/templates/_base.html" %}
 
 {% block title %}Projects · {{ config.title }}{% endblock title %}
-
-{% block body_class %}section-projects{% endblock body_class %}
+{% block body_class %}section-projects page-projects-index{% endblock body_class %}
 
 {% block content %}
 <div class="projects-index">
-  <h1>{{ section.title | default(value="Projects") }}</h1>
-  {%- if section.description %}
-  <p class="projects-index__desc">{{ section.description }}</p>
-  {%- endif %}
+  <header class="projects-index__head">
+    <p class="projects-index__kicker">Things I've built</p>
+    <h1>{{ section.title | default(value="Projects") }}</h1>
+    {%- if section.description %}
+    <p class="projects-index__desc">{{ section.description }}</p>
+    {%- endif %}
+  </header>
 
-  <div class="projects-grid">
+  <ol class="projects-grid">
     {%- for sub_path in section.subsections %}
       {%- set sub = get_section(path=sub_path) %}
-      <a href="{{ sub.permalink }}" class="project-card">
-        <span class="project-card__tag">
-          {{ sub.extra.category | default(value="Project") }}
-        </span>
-        <h2 class="project-card__title">{{ sub.title }}</h2>
-        {%- if sub.description %}
-        <p class="project-card__desc">{{ sub.description | truncate(length=110) }}</p>
-        {%- endif %}
-        <span class="project-card__cta">Open docs →</span>
-      </a>
+      {%- set hue = sub.extra.hue | default(value="default") %}
+      <li class="project-card" data-hue="{{ hue }}">
+        <a href="{{ sub.permalink }}" class="project-card__link">
+          <span class="project-card__sigil">{{ sub.extra.sigil | default(value="·") }}</span>
+          <div class="project-card__body">
+            <h2 class="project-card__title">{{ sub.title }}</h2>
+            {%- if sub.description %}
+            <p class="project-card__desc">{{ sub.description | truncate(length=160) }}</p>
+            {%- endif %}
+            <div class="project-card__meta">
+              <span class="project-card__cat">{{ sub.extra.category | default(value="Project") }}</span>
+              {%- if sub.extra.status %}
+              <span>· {{ sub.extra.status }}</span>
+              {%- endif %}
+              {%- if sub.extra.language %}
+              <span>· {{ sub.extra.language }}</span>
+              {%- endif %}
+            </div>
+          </div>
+          <span class="project-card__arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
     {%- else %}
-    <p style="opacity:0.6; grid-column:1/-1;">
-      No projects yet. Add a folder under <code>content/projects/</code>.
-    </p>
+      <li class="projects-grid__empty">
+        <p>No projects to show. Building.</p>
+        <p class="projects-grid__empty-sub">Drop a folder under <code>content/projects/</code> with an <code>_index.md</code>.</p>
+      </li>
     {%- endfor %}
-  </div>
+  </ol>
 </div>
 {% endblock content %}

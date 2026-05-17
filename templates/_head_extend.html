@@ -23,6 +23,17 @@
 <!-- Scripts: deferred so they don't block paint -->
 <script defer src="/js/menu.js"></script>
 <script defer src="/js/copy-code.js"></script>
+<script defer src="/js/shortcuts.js"></script>
+
+<!-- Hello-curious-developer console message -->
+<script>
+(function () {
+  if (typeof console === 'undefined') return;
+  var s1 = 'color:#c84a2e;font:600 13px/1.4 ui-monospace,JetBrains Mono,monospace';
+  var s2 = 'color:#777;font:400 12px/1.4 ui-monospace,JetBrains Mono,monospace';
+  console.log('%cHi.%c If you got this far you might enjoy the source: github.com/bauerceptor — or press ? for keyboard shortcuts.', s1, s2);
+})();
+</script>
 
 <!-- Section-specific stylesheets -->
 {% set path = current_path | default(value="/") %}
