@@ -38,7 +38,7 @@
   {%- set year_pages = section.pages | filter(attribute="extra.year", value=year) %}
   {%- if year_pages | length > 0 %}
 
-<h2 class="pub-year">{{ year if year != 0 else "Other" }}</h2>
+<h2 class="pub-year">{% if year != 0 %}{{ year }}{% else %}Other{% endif %}</h2>
 
   {%- for page in year_pages %}
 <article class="pub-card" id="{{ page.slug }}">

@@ -112,7 +112,11 @@
   </div>
   <div class="bento">
     {%- set featured = research.pages | filter(attribute="extra.featured", value=true) %}
-    {%- set show = featured if featured | length > 0 else research.pages %}
+    {%- if featured | length > 0 %}
+      {%- set_global show = featured %}
+    {%- else %}
+      {%- set_global show = research.pages %}
+    {%- endif %}
     {%- for paper in show | slice(end=3) %}
     <article class="bento-card {% if loop.first %}bento-card--wide{% else %}bento-card--narrow{% endif %}">
       <span class="bento-card__venue">
