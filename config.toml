@@ -37,6 +37,16 @@ lang = "en"
 theme = ""            # leave empty — toggle button shows by default
 display_id = false
 
+# Serene base-template knobs (all required by serene's _base.html / partials)
+force_theme = false   # false | "light" | "dark"
+back_link_text = "Back"
+footer_copyright = "© 2026 Your Name"
+footer_credits = true
+not_found_error_text = "404 Not Found"
+not_found_recover_text = "« back to home »"
+reaction_align = "right"
+reaction_endpoint = ""
+
 # Sections that appear in Serene's nav (the built-in top nav).
 # We also inject our own hamburger menu overlay for cross-site navigation.
 blog_section_path = "/posts"
