@@ -91,11 +91,23 @@
     );
   }
 
+  /* ── Site mark: small SVG logo, top-left, links to /. Hidden on home. ── */
+  function buildSiteMark() {
+    if (document.body.classList.contains("page-home")) return "";
+    return (
+      '<a class="site-mark" href="/" aria-label="' + SITE_NAME + ' — home">' +
+        '<span class="site-mark__glyph" aria-hidden="true"></span>' +
+      "</a>"
+    );
+  }
+
   /* ── Inject on DOMContentLoaded ─────────────────────────────────────── */
   function init() {
-    var container = document.createElement("div");
-    container.innerHTML = buildMenu();
-    document.body.insertBefore(container.firstChild, document.body.firstChild);
+    var temp = document.createElement("div");
+    temp.innerHTML = buildSiteMark() + buildMenu();
+    var frag = document.createDocumentFragment();
+    while (temp.firstChild) frag.appendChild(temp.firstChild);
+    document.body.insertBefore(frag, document.body.firstChild);
 
     /* Close overlay when clicking the backdrop (outside the panel) */
     var overlay = document.querySelector(".menu-overlay");
