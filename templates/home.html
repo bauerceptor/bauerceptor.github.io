@@ -107,32 +107,6 @@
   </section>
   {%- endif %}
 
-  {# Slides & talks — driven by config.extra.talks. Opens in a new tab. #}
-  {%- if config.extra.talks and config.extra.talks | length > 0 %}
-  <section class="home-block">
-    <header class="home-block__head">
-      <h2>Slides & talks</h2>
-    </header>
-    <ol class="home-list">
-      {%- for talk in config.extra.talks %}
-      <li class="home-list__item home-list__item--rich">
-        <div class="home-list__main">
-          <a class="home-list__link" href="{{ talk.url }}" target="_blank" rel="noopener">
-            {{ talk.title }} <span class="home-list__ext" aria-hidden="true">↗</span>
-          </a>
-          {%- if talk.description %}
-          <span class="home-list__sub">{{ talk.description }}</span>
-          {%- endif %}
-        </div>
-        {%- if talk.date %}
-        <time class="home-list__meta" datetime="{{ talk.date }}">{{ talk.date | date(format="%b %Y") }}</time>
-        {%- endif %}
-      </li>
-      {%- endfor %}
-    </ol>
-  </section>
-  {%- endif %}
-
   <footer class="home-foot">
     <span>{{ config.extra.footer_copyright }}</span>
     <nav>

@@ -76,4 +76,6 @@ document.addEventListener("DOMContentLoaded", function () {
 {% elif path is starting_with("/posts") %}
 <link rel="stylesheet" href="/css/blog-notes.css">
 <link rel="stylesheet" href="/css/posts.css">
+{% elif path == "/slides/" or path == "/slides" %}
+<link rel="stylesheet" href="/css/slides.css">
 {% endif %}

@@ -18,7 +18,7 @@ Companion class site lives at `bauerceptor/zola-class` and is linked from the ha
 | `/posts/`   | Long-form writing                           | `templates/blog.html` + `post.html`|
 | `/notes/`   | Short notes, references, speaker notes      | `templates/blog.html` + `post.html`|
 | `/resume/`  | Single-page CV with PDF download            | `templates/resume/page.html`       |
-| `/slides/`  | Static reveal.js decks (passthrough)        | none — drop HTML in `static/slides/`|
+| `/slides/`  | Listing page for all decks (links open in new tab) | `templates/slides.html`        |
 | `/404.html` | Custom 404 page                             | `templates/404.html`               |
 
 ---
@@ -266,7 +266,7 @@ The `static/slides/demo/index.html` deck is a fully-styled template — copy the
 - JetBrains Mono with ligatures
 - `?` for the shortcuts overlay
 
-**Step 2 — OPTIONAL but recommended — surface it on the home page.** Add an entry to the `talks` array in `config.toml` under `[extra]`:
+**Step 2 — REQUIRED to list it on `/slides/`.** Add an entry to the `talks` array in `config.toml` under `[extra]`:
 
 ```toml
 talks = [
@@ -275,9 +275,9 @@ talks = [
 ]
 ```
 
-Required: `title`, `url`. Optional: `description`, `date` (YYYY-MM-DD string).
+Required per entry: `title`, `url`. Optional: `description`, `date` (YYYY-MM-DD string).
 
-The home page renders a "Slides & talks" block listing every entry. Clicks open in a new tab. The block is hidden automatically when `talks` is empty or missing.
+Without this entry the deck still works at its direct URL, but it won't appear on the `/slides/` listing page or in the hamburger menu's "Slides" link. The `/slides/` page reads this array directly. Clicks open in a new tab via `target="_blank"`.
 
 **Step 3 — OPTIONAL — embed a deck inline in a post or project page** via the shortcode:
 

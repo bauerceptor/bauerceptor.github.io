@@ -1,0 +1,44 @@
+{% extends "serene/templates/_base.html" %}
+
+{# /slides/ listing — driven by config.extra.talks. Each deck opens in a new tab. #}
+
+{% block title %}{{ section.title }} · {{ config.title }}{% endblock title %}
+{% block body_class %}section-slides page-slides{% endblock body_class %}
+
+{% block content %}
+<div class="slides-listing">
+  <header class="slides-listing__head">
+    <p class="slides-listing__kicker">Decks, lectures, demos</p>
+    <h1>{{ section.title }}</h1>
+    {%- if section.description %}
+    <p class="slides-listing__desc">{{ section.description }}</p>
+    {%- endif %}
+  </header>
+
+  {%- if config.extra.talks and config.extra.talks | length > 0 %}
+  <ol class="slides-list">
+    {%- for talk in config.extra.talks %}
+    <li class="slide-row">
+      <a class="slide-row__link" href="{{ talk.url }}" target="_blank" rel="noopener">
+        <div class="slide-row__body">
+          <h2 class="slide-row__title">
+            {{ talk.title }} <span class="slide-row__ext" aria-hidden="true">↗</span>
+          </h2>
+          {%- if talk.description %}
+          <p class="slide-row__desc">{{ talk.description }}</p>
+          {%- endif %}
+        </div>
+        {%- if talk.date %}
+        <time class="slide-row__date" datetime="{{ talk.date }}">{{ talk.date | date(format="%b %-d, %Y") }}</time>
+        {%- endif %}
+      </a>
+    </li>
+    {%- endfor %}
+  </ol>
+  {%- else %}
+  <div class="slides-listing__empty">
+    <p>No slide decks listed yet. Drop one in <code>static/slides/</code> and add it to <code>config.toml</code>.</p>
+  </div>
+  {%- endif %}
+</div>
+{% endblock content %}

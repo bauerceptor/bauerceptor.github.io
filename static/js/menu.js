@@ -26,6 +26,7 @@
     { label: "Projects", url: "/projects/", external: false },
     { label: "Writing",  url: "/posts/",    external: false },
     { label: "Notes",    url: "/notes/",    external: false },
+    { label: "Slides",   url: "/slides/",   external: false },
     { label: "Resume",   url: "/resume/",   external: false },
     { label: "Class",    url: "https://bauerceptor.github.io/zola-class/", external: true },
   ];

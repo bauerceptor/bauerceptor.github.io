@@ -48,6 +48,7 @@ sections = [
     { name = "Projects", path = "/projects", is_external = false },
     { name = "Writing",  path = "/posts",    is_external = false },
     { name = "Notes",    path = "/notes",    is_external = false },
+    { name = "Slides",   path = "/slides",   is_external = false },
     { name = "Resume",   path = "/resume",   is_external = false },
     { name = "Class",    path = "https://bauerceptor.github.io/zola-class/", is_external = true },
 ]
