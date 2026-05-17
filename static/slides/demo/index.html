@@ -47,7 +47,8 @@
     .reveal { font-family: var(--font-sans); color: var(--fg); }
     .reveal .slides { text-align: left; }
     body, html, .reveal-viewport { background: var(--bg) !important; }
-    .reveal section { padding: 1rem; }
+    /* Top padding clears the absolutely-positioned .slide-id badge */
+    .reveal section { padding: 4.5rem 1rem 1rem; }
 
     .reveal h1,
     .reveal h2,
