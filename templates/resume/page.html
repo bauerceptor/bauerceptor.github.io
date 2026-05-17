@@ -17,9 +17,9 @@
   {# ── Header ───────────────────────────────────────────────────────────── #}
   <header class="resume-header">
     <div>
-      <h1 class="resume-header__name">{{ page.extra.resume_name | default(value=config.extra.name) }}</h1>
-      {%- if page.extra.resume_title %}
-      <p class="resume-header__title">{{ page.extra.resume_title }}</p>
+      <h1 class="resume-header__name">{{ section.extra.resume_name | default(value=config.extra.name) }}</h1>
+      {%- if section.extra.resume_title %}
+      <p class="resume-header__title">{{ section.extra.resume_title }}</p>
       {%- endif %}
     </div>
     <div class="resume-header__links">
@@ -35,9 +35,9 @@
   </header>
 
   {# ── Download button ──────────────────────────────────────────────────── #}
-  {%- if page.extra.resume_pdfs %}
+  {%- if section.extra.resume_pdfs %}
   <div style="margin-bottom:2rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
-    {%- for pdf in page.extra.resume_pdfs %}
+    {%- for pdf in section.extra.resume_pdfs %}
     <a href="{{ pdf.path }}" class="resume-download" download>
       ↓ {{ pdf.label | default(value="Download PDF") }}
     </a>
@@ -57,7 +57,7 @@
     See the sample content file for the expected structure.
   #}
   <div class="prose">
-    {{ page.content | safe }}
+    {{ section.content | safe }}
   </div>
 
 </div>
