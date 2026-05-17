@@ -1,65 +1,118 @@
 /*
- * blog-notes.css
- * Loaded on /posts/* and /notes/* pages via _head_extend.html.
- * Serene already provides solid base prose styles. This file
- * handles only what we need to layer on top: small tweaks for
- * readability and our font stack.
+ * blog-notes.css — shared layer for /posts and /notes prose.
+ * Loaded on /posts/ and /notes/ via _head_extend.html.
  */
 
-/* Body font is Source Sans 3 (set globally in _custom_css.html).
-   We only need to ensure code blocks use JetBrains Mono and that
-   the reading width is comfortable. Serene's prose width is already
-   good; these are minor overrides.                                  */
-
-/* ── Prose width & spacing ──────────────────────────────────────────────── */
 .prose,
 article.post-content {
-  font-family: "Source Sans 3", system-ui, sans-serif;
-  font-size: 1.05rem;
-  line-height: 1.78;
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  line-height: 1.75;
+  color: var(--fg);
+  max-width: 68ch;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* ── Heading rhythm ─────────────────────────────────────────────────────── */
-.prose h1 { font-size: 2rem;   letter-spacing: -0.025em; }
-.prose h2 { font-size: 1.45rem; letter-spacing: -0.018em; margin-top: 2.5rem; }
-.prose h3 { font-size: 1.15rem; letter-spacing: -0.01em;  margin-top: 2rem; }
+.prose h1 {
+  font-family: var(--font-serif);
+  font-variation-settings: "opsz" 48;
+  font-size: clamp(2rem, 4.5vw, 2.66rem);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.1;
+}
 
-/* ── Inline code ────────────────────────────────────────────────────────── */
+.prose h2 {
+  font-family: var(--font-sans);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: var(--sp-7);
+  margin-bottom: var(--sp-3);
+}
+
+.prose h3 {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin-top: var(--sp-5);
+  margin-bottom: var(--sp-2);
+}
+
 .prose code {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono);
   font-size: 0.88em;
+  padding: 2px 6px;
+  background: var(--bg-2);
+  border-radius: 2px;
+  color: var(--fg);
 }
 
-/* ── Blockquote ─────────────────────────────────────────────────────────── */
+.prose pre code {
+  padding: 0;
+  background: transparent;
+}
+
+.prose pre {
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: var(--sp-4);
+  overflow-x: auto;
+}
+
+.prose a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+              color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.prose a:hover,
+.prose a:focus-visible {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+/* Blockquote: hairline left rule, italic, no colored stripe. */
 .prose blockquote {
-  border-left-width: 3px;
+  border: none;
+  border-left: 1px solid var(--rule);
+  padding-left: var(--sp-5);
+  margin-left: 0;
   font-style: italic;
-  opacity: 0.82;
+  color: var(--fg-2);
 }
 
-/* ── Post metadata line ─────────────────────────────────────────────────── */
+/* Post metadata */
 .post-meta,
 .post-date {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.78rem;
-  opacity: 0.55;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.02em;
+  color: var(--fg-3);
 }
 
-/* ── Tag chips in post headers ──────────────────────────────────────────── */
+/* Tag chips */
 .post-tags a,
 .taxonomy-tag {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
   letter-spacing: 0.04em;
-  padding: 0.15em 0.5em;
-  border-radius: 3px;
-  border: 1px solid rgba(128,128,128,0.22);
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--fg-3);
   text-decoration: none;
-  opacity: 0.75;
-  transition: opacity 0.15s ease;
+  transition: color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .post-tags a:hover,
 .taxonomy-tag:hover {
-  opacity: 1;
+  color: var(--accent);
+  border-color: var(--accent);
 }

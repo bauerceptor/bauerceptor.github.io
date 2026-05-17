@@ -91,33 +91,23 @@
     <h1>{{ page.title }}</h1>
 
     {%- if page.description %}
-    <p style="opacity:0.65; font-size:1rem; margin-top:-0.5rem; margin-bottom:1.5rem;">
-      {{ page.description }}
-    </p>
+    <p class="docs-content__desc">{{ page.description }}</p>
     {%- endif %}
 
     <div class="prose">
       {{ page.content | safe }}
     </div>
 
-    {# ── Prev / Next navigation ────────────────────────────────────────── #}
     {%- if page.earlier or page.later %}
-    <nav class="docs-prev-next" aria-label="Previous and next pages"
-         style="display:flex; justify-content:space-between; margin-top:3rem;
-                border-top:1px solid rgba(128,128,128,0.15); padding-top:1.25rem;
-                font-size:0.88rem;">
+    <nav class="docs-prev-next" aria-label="Previous and next pages">
       <div>
         {%- if page.later %}
-        <a href="{{ page.later.permalink }}" style="text-decoration:none; opacity:0.75;">
-          ← {{ page.later.title }}
-        </a>
+        <a href="{{ page.later.permalink }}">← {{ page.later.title }}</a>
         {%- endif %}
       </div>
       <div>
         {%- if page.earlier %}
-        <a href="{{ page.earlier.permalink }}" style="text-decoration:none; opacity:0.75;">
-          {{ page.earlier.title }} →
-        </a>
+        <a href="{{ page.earlier.permalink }}">{{ page.earlier.title }} →</a>
         {%- endif %}
       </div>
     </nav>

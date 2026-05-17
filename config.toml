@@ -1,6 +1,6 @@
 base_url = "https://bauerceptor.github.io"
-title = "Your Name"
-description = "Researcher · Educator · Builder"
+title = "Hassan Aziz"
+description = "Machine learning, robotics, security, and networked systems."
 default_language = "en"
 theme = "serene"
 compile_sass = true
@@ -27,53 +27,42 @@ include_path = true
 include_content = true
 truncate_content_length = 100
 
-# ── Serene theme settings ────────────────────────────────────────────────────
 [extra]
-# Pin note: submodule is pinned to tag v5.6.3
-# To pin: git submodule add -b v5.6.3 https://github.com/isunjn/serene.git themes/serene
-# Then: cd themes/serene && git checkout v5.6.3
-
 lang = "en"
-theme = ""            # leave empty — toggle button shows by default
+theme = ""           # follow system; toggle button still works
 display_id = false
 
-# Serene base-template knobs (all required by serene's _base.html / partials)
-force_theme = false   # false | "light" | "dark"
+force_theme = false
 back_link_text = "Back"
-footer_copyright = "© 2026 Your Name"
+footer_copyright = "© 2026 Hassan Aziz"
 footer_credits = true
-not_found_error_text = "404 Not Found"
-not_found_recover_text = "« back to home »"
+not_found_error_text = "404"
+not_found_recover_text = "back to home"
 reaction_align = "right"
 reaction_endpoint = ""
 
-# Sections that appear in Serene's nav (the built-in top nav).
-# We also inject our own hamburger menu overlay for cross-site navigation.
 blog_section_path = "/posts"
 
 sections = [
-    { name = "Posts",    path = "/posts",    is_external = false },
-    { name = "Notes",    path = "/notes",    is_external = false },
     { name = "Research", path = "/research", is_external = false },
     { name = "Projects", path = "/projects", is_external = false },
+    { name = "Writing",  path = "/posts",    is_external = false },
+    { name = "Notes",    path = "/notes",    is_external = false },
     { name = "Resume",   path = "/resume",   is_external = false },
-    { name = "Class ↗",  path = "https://bauerceptor.github.io/zola-class", is_external = true },
 ]
 
-# Social / contact links — shown on homepage and in hamburger menu.
-# Replace placeholder values before deploying.
 links = [
-    { name = "GitHub",        icon = "github",   url = "https://github.com/PLACEHOLDER" },
-    { name = "Email",         icon = "email",    url = "mailto:PLACEHOLDER@example.com" },
-    { name = "Google Scholar",icon = "scholar",  url = "https://scholar.google.com/citations?user=PLACEHOLDER" },
-    { name = "Twitter / X",   icon = "twitter",  url = "https://twitter.com/PLACEHOLDER" },
-    { name = "LinkedIn",      icon = "linkedin", url = "https://linkedin.com/in/PLACEHOLDER" },
+    { name = "GitHub",   icon = "github",   url = "https://github.com/bauerceptor" },
+    { name = "Email",    icon = "email",    url = "mailto:abdullahahmedtanveer@gmail.com" },
+    { name = "Scholar",  icon = "scholar",  url = "https://scholar.google.com/citations?user=PLACEHOLDER" },
+    { name = "X",        icon = "twitter",  url = "https://x.com/PLACEHOLDER" },
+    { name = "LinkedIn", icon = "linkedin", url = "https://linkedin.com/in/PLACEHOLDER" },
 ]
 
-# ── Post / page defaults (can all be overridden in front matter) ─────────────
+# Post / page defaults
 toc              = true
-copy             = true      # copy-to-clipboard on code blocks; toggleable via our JS
-comment          = false     # set true once giscus is configured
+copy             = true
+comment          = false
 math             = false
 mermaid          = false
 reaction         = false
@@ -87,24 +76,21 @@ outdate_alert_text_after  = " days ago and may be out of date."
 
 date_format = "%b %-d, %Y"
 
-# ── Homepage ─────────────────────────────────────────────────────────────────
-# Serene's home.html uses `name`, `id`, `bio`, `avatar`.
-# We fully override home.html, so these are used by OUR template instead.
-name   = "Your Name"
-id     = "your-id"
-bio    = "PhD researcher in [Field] at [University]. I write about [topics], build [things], and teach [courses]."
+# Homepage copy
+name   = "Hassan Aziz"
+id     = "hassan-aziz"
+bio    = "Researcher and builder working across machine learning, robotics, security, and networked systems. I prefer hard problems over polished ones."
 avatar = "img/avatar.webp"
 
 recent         = true
 recent_max     = 5
 recent_more_text = "All posts →"
 
-# ── Giscus (fill in after setting up giscus.app) ────────────────────────────
-# comment = true   ← uncomment in [extra] above once ready
+# Giscus comments — uncomment when configured.
 # giscus_repo           = "bauerceptor/bauerceptor.github.io"
-# giscus_repo_id        = "REPLACE_AFTER_SETUP"
+# giscus_repo_id        = ""
 # giscus_category       = "Comments"
-# giscus_category_id    = "REPLACE_AFTER_SETUP"
+# giscus_category_id    = ""
 # giscus_mapping        = "pathname"
 # giscus_strict         = "0"
 # giscus_reactions      = "1"

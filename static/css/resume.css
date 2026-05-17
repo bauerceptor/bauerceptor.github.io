@@ -1,40 +1,39 @@
 /*
- * resume.css
- * BelResume-inspired layout for the /resume/ page.
- * Font: Carme (set via body.section-resume in _custom_css.html).
- * Print stylesheet included at the bottom.
+ * resume.css — single-page CV.
  */
 
 .resume-page {
-  max-width: 860px;
-  margin: 3rem auto 5rem;
-  padding: 0 1.5rem;
+  max-width: 68ch;
+  margin: 0 auto;
+  padding: clamp(3rem, 7vw, 5rem) clamp(1.25rem, 4vw, 2rem) var(--sp-9);
 }
 
-/* ── Header / name block ────────────────────────────────────────────────── */
+/* ── Header ─────────────────────────────────────────────────────────────── */
 .resume-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: flex-end;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 2px solid var(--primary-color, #2a6496);
+  gap: var(--sp-5);
+  margin-bottom: var(--sp-7);
+  padding-bottom: var(--sp-5);
+  border-bottom: 1px solid var(--rule);
 }
 
 .resume-header__name {
-  font-family: "Carme", Georgia, serif;
+  font-family: var(--font-serif);
+  font-variation-settings: "opsz" 60;
   font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
+  font-weight: 500;
+  letter-spacing: -0.015em;
   line-height: 1;
-  margin: 0 0 0.4rem;
+  color: var(--fg);
+  margin: 0 0 var(--sp-2);
 }
 
 .resume-header__title {
-  font-size: 1rem;
-  opacity: 0.65;
+  font-size: var(--text-md);
+  color: var(--fg-2);
   margin: 0;
 }
 
@@ -42,141 +41,105 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 0.3rem;
+  gap: var(--sp-1);
 }
 
 .resume-header__links a {
-  font-family: var(--code-font, monospace);
-  font-size: 0.8rem;
-  color: var(--primary-color, #2a6496);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-2);
   text-decoration: none;
-  transition: opacity 0.15s;
+  transition: color 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-
-.resume-header__links a:hover { opacity: 0.7; }
-
-html.dark .resume-header__links a { color: var(--primary-color, #6aacdf); }
+.resume-header__links a:hover,
+.resume-header__links a:focus-visible { color: var(--accent); }
 
 /* ── Download button ────────────────────────────────────────────────────── */
 .resume-download {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-family: "Carme", Georgia, serif;
-  font-size: 0.85rem;
-  padding: 0.55rem 1.25rem;
-  border: 1px solid var(--primary-color, #2a6496);
-  border-radius: 5px;
-  color: var(--primary-color, #2a6496);
-  text-decoration: none;
-  margin-bottom: 2rem;
-  transition: background 0.18s ease, color 0.18s ease;
-}
-
-.resume-download:hover {
-  background: var(--primary-color, #2a6496);
-  color: #fff;
-}
-
-html.dark .resume-download {
-  color: var(--primary-color, #6aacdf);
-  border-color: var(--primary-color, #6aacdf);
-}
-
-html.dark .resume-download:hover {
-  background: var(--primary-color, #6aacdf);
-  color: #111;
-}
-
-/* ── Section heading ────────────────────────────────────────────────────── */
-.resume-section {
-  margin-bottom: 2rem;
-}
-
-.resume-section__title {
-  font-family: "Carme", Georgia, serif;
-  font-size: 0.72rem;
-  font-weight: 400;
-  letter-spacing: 0.18em;
+  gap: var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--primary-color, #2a6496);
-  border-bottom: 1px solid rgba(128,128,128,0.2);
-  padding-bottom: 0.3rem;
-  margin-bottom: 1rem;
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid var(--fg-2);
+  border-radius: 2px;
+  color: var(--fg);
+  text-decoration: none;
+  margin-bottom: var(--sp-7);
+  transition: background 180ms cubic-bezier(0.16, 1, 0.3, 1),
+              color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-html.dark .resume-section__title { color: var(--primary-color, #6aacdf); }
-
-/* ── Entry (job, education, project) ───────────────────────────────────── */
-.resume-entry {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.15rem 1rem;
-  margin-bottom: 1.25rem;
+.resume-download:hover,
+.resume-download:focus-visible {
+  background: var(--fg);
+  color: var(--bg);
+  border-color: var(--fg);
 }
 
-.resume-entry__title {
-  font-family: "Carme", Georgia, serif;
-  font-size: 1rem;
-  font-weight: 400;
-  margin: 0;
-  line-height: 1.3;
+/* ── Prose for markdown body ────────────────────────────────────────────── */
+.resume-page .prose {
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  line-height: 1.7;
+  color: var(--fg);
 }
 
-.resume-entry__org {
-  font-size: 0.88rem;
-  opacity: 0.7;
-  grid-column: 1;
+.resume-page .prose h2 {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  margin-top: var(--sp-8);
+  margin-bottom: var(--sp-3);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--rule);
 }
 
-.resume-entry__date {
-  font-family: var(--code-font, monospace);
-  font-size: 0.78rem;
-  opacity: 0.55;
-  grid-column: 2;
-  grid-row: 1;
-  white-space: nowrap;
-  text-align: right;
-  padding-top: 0.15rem;
+.resume-page .prose h3 {
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  font-weight: 600;
+  margin-top: var(--sp-5);
+  margin-bottom: var(--sp-1);
 }
 
-.resume-entry__desc {
-  grid-column: 1 / -1;
-  font-size: 0.9rem;
-  line-height: 1.65;
-  opacity: 0.8;
-  margin-top: 0.35rem;
+.resume-page .prose p { margin: 0 0 var(--sp-3); }
+.resume-page .prose hr { display: none; }
+.resume-page .prose ul { padding-left: var(--sp-5); margin: var(--sp-2) 0; }
+.resume-page .prose li { margin-bottom: var(--sp-1); }
+
+.resume-page .prose code {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  padding: 2px 6px;
+  background: var(--bg-2);
+  border-radius: 2px;
+  color: var(--fg-2);
 }
 
-.resume-entry__desc ul {
-  margin: 0.3rem 0 0;
-  padding-left: 1.2rem;
+.resume-page .prose a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.resume-page .prose a:hover,
+.resume-page .prose a:focus-visible {
+  text-decoration-color: var(--accent);
+  color: var(--accent);
 }
 
-.resume-entry__desc li {
-  margin-bottom: 0.2rem;
-}
-
-/* ── Skills tags ─────────────────────────────────────────────────────────── */
-.resume-skills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-}
-
-.resume-skill {
-  font-family: var(--code-font, monospace);
-  font-size: 0.75rem;
-  padding: 0.2em 0.6em;
-  border-radius: 4px;
-  border: 1px solid rgba(128,128,128,0.2);
-  opacity: 0.8;
-  transition: opacity 0.15s;
-}
-
-.resume-skill:hover { opacity: 1; }
-
-/* ── Print styles ───────────────────────────────────────────────────────── */
+/* ── Print ──────────────────────────────────────────────────────────────── */
 @media print {
   .menu-wrap,
   .resume-download,
@@ -188,13 +151,8 @@ html.dark .resume-section__title { color: var(--primary-color, #6aacdf); }
     color: #000 !important;
   }
 
-  .resume-page {
-    margin: 0;
-    padding: 0;
-    max-width: 100%;
-  }
-
+  .resume-page { margin: 0; padding: 0; max-width: 100%; }
   a { color: #000 !important; text-decoration: none; }
-
   .resume-header__name { font-size: 2rem; }
+  .resume-page .prose h2 { color: #444 !important; }
 }

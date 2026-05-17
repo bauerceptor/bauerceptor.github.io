@@ -1,59 +1,82 @@
 <!--
   _custom_css.html
-  Serene's official hook for CSS variable overrides and section-specific fonts.
-  Loaded on every page. Keep structural changes minimal here — heavy custom
-  styles live in static/css/ and are loaded conditionally per section via
-  _head_extend.html.
+  Design tokens + serene variable overrides. See DESIGN.md.
 -->
 <style>
-  /* ── Global font assignments ─────────────────────────────────────────── */
   :root {
-    --main-font: "Source Sans 3", system-ui, sans-serif;
-    --code-font: "JetBrains Mono", "Fira Code", monospace;
-  }
+    /* fonts */
+    --font-serif: "Newsreader", Charter, Georgia, serif;
+    --font-sans:  "Inter", system-ui, -apple-system, sans-serif;
+    --font-mono:  "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
 
-  /* ── Serene colour token overrides ─────────────────────────────────────
-     These match Serene's internal variable names.
-     Tweak --primary-color to your preferred accent.             */
-  :root {
-    --primary-color: #2a6496;   /* academic blue — change freely */
+    /* serene compatibility */
+    --main-font: var(--font-sans);
+    --code-font: var(--font-mono);
+
+    /* type scale (1.333 ratio) */
+    --text-xs:  0.75rem;
+    --text-sm:  0.875rem;
+    --text-md:  1rem;
+    --text-lg:  1.125rem;
+    --text-xl:  1.5rem;
+    --text-2xl: 2rem;
+    --text-3xl: 2.66rem;
+    --text-4xl: 3.55rem;
+
+    /* spacing */
+    --sp-1:  4px;
+    --sp-2:  8px;
+    --sp-3:  12px;
+    --sp-4:  16px;
+    --sp-5:  24px;
+    --sp-6:  32px;
+    --sp-7:  48px;
+    --sp-8:  64px;
+    --sp-9:  96px;
+    --sp-10: 128px;
+
+    /* light theme tokens (default) */
+    --bg:        oklch(98% 0.008 80);
+    --bg-2:      oklch(95% 0.010 80);
+    --fg:        oklch(22% 0.015 75);
+    --fg-2:      oklch(45% 0.012 75);
+    --fg-3:      oklch(65% 0.008 75);
+    --rule:      oklch(86% 0.008 80);
+    --accent:    oklch(54% 0.18 35);
+    --accent-fg: oklch(98% 0.008 80);
+
+    /* serene token bridge */
+    --primary-color: var(--accent);
+    --bg-color:      var(--bg);
+    --text-color:    var(--fg);
   }
 
   html.dark {
-    --primary-color: #6aacdf;
+    --bg:        oklch(15% 0.012 270);
+    --bg-2:      oklch(19% 0.014 270);
+    --fg:        oklch(93% 0.008 70);
+    --fg-2:      oklch(70% 0.010 70);
+    --fg-3:      oklch(50% 0.012 70);
+    --rule:      oklch(26% 0.014 270);
+    --accent:    oklch(72% 0.16 40);
+    --accent-fg: oklch(15% 0.012 270);
   }
 
-  /* ── Giallo (syntax highlight) CSS swap ────────────────────────────────
-     Zola generates /giallo-light.css and /giallo-dark.css.
-     We override the media attribute via JS in theme-toggle.js
-     so the correct sheet loads when the user switches themes.
-     The <link> tags themselves are injected in _head_extend.html. */
-
-  /* ── Research section: Frank Ruhl Libre body font ───────────────────── */
+  /* Body / section font assignments. Research pages use serif body; everything else sans. */
+  body { font-family: var(--font-sans); color: var(--fg); background: var(--bg); }
   body.section-research,
-  body.section-research .prose {
-    font-family: "Frank Ruhl Libre", Georgia, serif;
+  body.section-research .prose { font-family: var(--font-serif); }
+
+  /* Numbers should column-align in lists and tables. */
+  .post-list, .pub-card, .paper-page__meta, time, .row-meta {
+    font-variant-numeric: tabular-nums;
   }
 
-  /* ── Notes & Projects: Mulish body font ────────────────────────────── */
-  body.section-notes .prose,
-  body.section-projects .prose {
-    font-family: "Mulish", system-ui, sans-serif;
-  }
-
-  /* ── Resume: Carme ──────────────────────────────────────────────────── */
-  body.section-resume {
-    font-family: "Carme", Georgia, serif;
-  }
-
-  /* ── Homepage title: Quattrocento ──────────────────────────────────── */
-  .home-title {
-    font-family: "Quattrocento", Georgia, serif;
-  }
-
-  /* ── Hamburger menu: Ubuntu ─────────────────────────────────────────── */
-  .menu-overlay a,
-  .menu-overlay .menu-label {
-    font-family: "Ubuntu", system-ui, sans-serif;
+  /* Reduced motion respect. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
   }
 </style>

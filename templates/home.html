@@ -1,252 +1,116 @@
 {% extends "serene/templates/_base.html" %}
-{#
-  templates/home.html
-  Full override of Serene's home.html.
-  Extends Serene's base.html so we inherit its <head>, theme toggle,
-  search wiring, and feed links — we only replace the body content.
-#}
+{# Editorial home: hero, now, selected research, projects, recent writing. #}
 
 {% block title %}{{ config.title }}{% endblock title %}
-
 {% block body_class %}page-home{% endblock body_class %}
 
 {% block content %}
 <link rel="stylesheet" href="/css/home.css">
 
-<!-- Custom cursor (desktop only, hidden on touch via CSS) -->
-<div id="site-cursor"      aria-hidden="true"></div>
-<div id="site-cursor-ring" aria-hidden="true"></div>
+<main class="home">
 
-<!-- ── Hero ──────────────────────────────────────────────────────────── -->
-<section class="hero" id="hero">
-  <div class="hero__orb hero__orb--1" aria-hidden="true"></div>
-  <div class="hero__orb hero__orb--2" aria-hidden="true"></div>
-
-  <div class="hero__content">
-    <p class="hero__eyebrow" aria-label="Tagline">
-      <span class="hero__eyebrow-line" aria-hidden="true"></span>
-      {{ config.description }}
-    </p>
-
-    <h1 class="hero__title">
-      {# First word plain, rest gradient — edit config.toml [extra] name to control #}
-      {%- set words = config.extra.name | split(pat=" ") -%}
-      <span class="hero__title-plain home-title">{{ words | first }}</span>
-      {%- if words | length > 1 %}
-      <br>
-      <span class="hero__title-gradient home-title">
-        {{ words | slice(start=1) | join(sep=" ") }}
-      </span>
-      {%- endif %}
-    </h1>
-
-    <p class="hero__bio">{{ config.extra.bio }}</p>
-
-    <div class="hero__cta">
-      <a href="/research/" class="hero-btn hero-btn--primary">View Research ↗</a>
-      <a href="/posts/"    class="hero-btn hero-btn--ghost">Writing</a>
-      <a href="/resume/"   class="hero-btn hero-btn--ghost">Resume</a>
-    </div>
-
-    <div class="hero__social">
+  {# Hero — quiet typography. No orbs, no CTAs, no eyebrow. #}
+  <section class="home-hero">
+    <p class="home-hero__kicker">{{ config.description }}</p>
+    <h1 class="home-hero__name">{{ config.extra.name }}</h1>
+    <p class="home-hero__bio">{{ config.extra.bio }}</p>
+    <ul class="home-hero__links">
       {%- for link in config.extra.links %}
-      <a href="{{ link.url }}"
-         class="hero__social-link"
-         {% if link.url is starting_with("http") %}target="_blank" rel="noopener noreferrer"{% endif %}
-         aria-label="{{ link.name }}"
-         title="{{ link.name }}">
-        {# TODO: swap for inline SVG icons; serene v5.6.3 has no _icon.html so showing label as fallback #}
-        {{ link.name }}
-      </a>
+      <li>
+        <a href="{{ link.url }}"
+           {% if link.url is starting_with("http") %}target="_blank" rel="noopener noreferrer"{% endif %}>
+          {{ link.name }}
+        </a>
+      </li>
       {%- endfor %}
-    </div>
-  </div>
-</section>
+    </ul>
+  </section>
 
-<!-- ── Marquee strip ─────────────────────────────────────────────────── -->
-<div class="marquee" aria-hidden="true">
-  <div class="marquee__track">
-    {%- set items = ["Research", "Teaching", "Open Source", "Machine Learning",
-                     "Writing", "Lectures", "Projects", "Mathematics", "Notes",
-                     "Publications", "Code"] %}
-    {%- for item in items %}
-    <span class="marquee__item{% if loop.index is odd %} marquee__item--accent{% endif %}">{{ item }}</span>
-    {%- endfor %}
-    {# Duplicate for seamless loop #}
-    {%- for item in items %}
-    <span class="marquee__item{% if loop.index is odd %} marquee__item--accent{% endif %}" aria-hidden="true">{{ item }}</span>
-    {%- endfor %}
-  </div>
-</div>
+  {# Recent writing #}
+  {%- set blog = get_section(path="posts/_index.md") %}
+  {%- if blog and blog.pages | length > 0 %}
+  <section class="home-block">
+    <header class="home-block__head">
+      <h2>Recent writing</h2>
+      <a href="/posts/" class="home-block__more">All posts</a>
+    </header>
+    <ol class="home-list">
+      {%- for post in blog.pages | slice(end=config.extra.recent_max) %}
+      <li class="home-list__item">
+        <a class="home-list__link" href="{{ post.permalink }}">{{ post.title }}</a>
+        <time class="home-list__meta" datetime="{{ post.date | date(format='%Y-%m-%d') }}">
+          {{ post.date | date(format="%b %Y") }}
+        </time>
+      </li>
+      {%- endfor %}
+    </ol>
+  </section>
+  {%- endif %}
 
-<!-- ── Recent posts ──────────────────────────────────────────────────── -->
-{%- set blog = get_section(path="posts/_index.md") %}
-{%- if blog and blog.pages | length > 0 %}
-<section class="home-section" id="writing">
-  <div class="home-section__header">
-    <h2 class="home-section__title">Writing</h2>
-    <div class="home-section__line" aria-hidden="true"></div>
-    <a href="/posts/" class="home-section__more">All posts →</a>
-  </div>
-  <ul class="post-list" role="list">
-    {%- for post in blog.pages | slice(end=config.extra.recent_max) %}
-    <li class="post-list__item">
-      <a href="{{ post.permalink }}" class="post-list__title">{{ post.title }}</a>
-      <time class="post-list__date" datetime="{{ post.date | date(format='%Y-%m-%d') }}">
-        {{ post.date | date(format="%b %Y") }}
-      </time>
-    </li>
-    {%- endfor %}
-  </ul>
-</section>
-{%- endif %}
-
-<!-- ── Research highlights ───────────────────────────────────────────── -->
-{%- set research = get_section(path="research/_index.md") %}
-{%- if research and research.pages | length > 0 %}
-<section class="home-section" id="research-highlights">
-  <div class="home-section__header">
-    <h2 class="home-section__title">Research</h2>
-    <div class="home-section__line" aria-hidden="true"></div>
-    <a href="/research/" class="home-section__more">All publications →</a>
-  </div>
-  <div class="bento">
+  {# Selected research #}
+  {%- set research = get_section(path="research/_index.md") %}
+  {%- if research and research.pages | length > 0 %}
+  <section class="home-block">
+    <header class="home-block__head">
+      <h2>Selected research</h2>
+      <a href="/research/" class="home-block__more">All publications</a>
+    </header>
     {%- set featured = research.pages | filter(attribute="extra.featured", value=true) %}
     {%- if featured | length > 0 %}
       {%- set_global show = featured %}
     {%- else %}
       {%- set_global show = research.pages %}
     {%- endif %}
-    {%- for paper in show | slice(end=3) %}
-    <article class="bento-card {% if loop.first %}bento-card--wide{% else %}bento-card--narrow{% endif %}">
-      <span class="bento-card__venue">
-        {{ paper.extra.venue | default(value="Research") }}
-        {% if paper.extra.year %}· {{ paper.extra.year }}{% endif %}
-      </span>
-      <h3 class="bento-card__title">
-        <a href="{{ paper.permalink }}">{{ paper.title }}</a>
-      </h3>
-      {%- if paper.description %}
-      <p class="bento-card__desc">{{ paper.description | truncate(length=110) }}</p>
-      {%- endif %}
-      <footer class="bento-card__footer">
-        {%- for tag in paper.taxonomies.tags | default(value=[]) | slice(end=3) %}
-        <span class="chip">{{ tag }}</span>
-        {%- endfor %}
-        <a href="{{ paper.permalink }}" class="bento-card__link">Details →</a>
-      </footer>
-    </article>
-    {%- endfor %}
-  </div>
-</section>
-{%- endif %}
+    <ol class="home-list">
+      {%- for paper in show | slice(end=4) %}
+      <li class="home-list__item home-list__item--rich">
+        <div class="home-list__main">
+          <a class="home-list__link" href="{{ paper.permalink }}">{{ paper.title }}</a>
+          {%- if paper.extra.venue %}
+          <span class="home-list__sub">{{ paper.extra.venue }}</span>
+          {%- endif %}
+        </div>
+        <span class="home-list__meta">
+          {%- if paper.extra.year %}{{ paper.extra.year }}{% endif -%}
+        </span>
+      </li>
+      {%- endfor %}
+    </ol>
+  </section>
+  {%- endif %}
 
-<!-- ── Projects ──────────────────────────────────────────────────────── -->
-{%- set proj = get_section(path="projects/_index.md") %}
-{%- if proj and proj.subsections | length > 0 %}
-<section class="home-section" id="projects-highlights">
-  <div class="home-section__header">
-    <h2 class="home-section__title">Projects</h2>
-    <div class="home-section__line" aria-hidden="true"></div>
-    <a href="/projects/" class="home-section__more">All projects →</a>
-  </div>
-  <div class="bento">
-    {%- for sub_path in proj.subsections | slice(end=4) %}
-    {%- set sub = get_section(path=sub_path) %}
-    <article class="bento-card bento-card--quarter">
-      <span class="bento-card__venue">{{ sub.extra.category | default(value="Project") }}</span>
-      <h3 class="bento-card__title">
-        <a href="{{ sub.permalink }}">{{ sub.title }}</a>
-      </h3>
-      {%- if sub.description %}
-      <p class="bento-card__desc">{{ sub.description | truncate(length=90) }}</p>
-      {%- endif %}
-      <footer class="bento-card__footer">
-        <a href="{{ sub.permalink }}" class="bento-card__link">Docs →</a>
-      </footer>
-    </article>
-    {%- endfor %}
-  </div>
-</section>
-{%- endif %}
+  {# Projects #}
+  {%- set proj = get_section(path="projects/_index.md") %}
+  {%- if proj and proj.subsections | length > 0 %}
+  <section class="home-block">
+    <header class="home-block__head">
+      <h2>Projects</h2>
+      <a href="/projects/" class="home-block__more">All projects</a>
+    </header>
+    <ol class="home-list">
+      {%- for sub_path in proj.subsections | slice(end=5) %}
+      {%- set sub = get_section(path=sub_path) %}
+      <li class="home-list__item home-list__item--rich">
+        <div class="home-list__main">
+          <a class="home-list__link" href="{{ sub.permalink }}">{{ sub.title }}</a>
+          {%- if sub.description %}
+          <span class="home-list__sub">{{ sub.description | truncate(length=110) }}</span>
+          {%- endif %}
+        </div>
+        <span class="home-list__meta">{{ sub.extra.category | default(value="Project") }}</span>
+      </li>
+      {%- endfor %}
+    </ol>
+  </section>
+  {%- endif %}
 
-<!-- ── Footer with random quotes ─────────────────────────────────────── -->
-<footer class="home-footer" role="contentinfo">
-  <div class="home-footer__quote-wrap" aria-live="polite">
-    <blockquote class="home-footer__quote" id="footer-quote"></blockquote>
-  </div>
-  <div class="home-footer__bottom">
-    <span class="home-footer__copy">© {{ now() | date(format="%Y") }} {{ config.extra.name }}</span>
-    <nav class="home-footer__links" aria-label="Footer links">
+  <footer class="home-foot">
+    <span>{{ config.extra.footer_copyright }}</span>
+    <nav>
       <a href="/atom.xml">RSS</a>
       <a href="/search/">Search</a>
-      {%- for link in config.extra.links | slice(end=3) %}
-      <a href="{{ link.url }}"
-         {% if link.url is starting_with("http") %}target="_blank" rel="noopener"{% endif %}>
-        {{ link.name }}
-      </a>
-      {%- endfor %}
     </nav>
-  </div>
-</footer>
+  </footer>
 
-<!-- ── Custom cursor ──────────────────────────────────────────────────── -->
-<script>
-(function () {
-  var c  = document.getElementById('site-cursor');
-  var cr = document.getElementById('site-cursor-ring');
-  if (!c || !cr || window.matchMedia('(hover: none)').matches) return;
-
-  var mx = 0, my = 0, rx = 0, ry = 0;
-
-  document.addEventListener('mousemove', function (e) {
-    mx = e.clientX; my = e.clientY;
-    c.style.transform = 'translate(' + mx + 'px,' + my + 'px) translate(-50%,-50%)';
-  });
-
-  (function loop() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    cr.style.transform = 'translate(' + rx + 'px,' + ry + 'px) translate(-50%,-50%)';
-    requestAnimationFrame(loop);
-  })();
-
-  document.querySelectorAll('a,button').forEach(function (el) {
-    el.addEventListener('mouseenter', function () { c.classList.add('cursor--hover'); });
-    el.addEventListener('mouseleave', function () { c.classList.remove('cursor--hover'); });
-  });
-})();
-</script>
-
-<!-- ── Random footer quote ────────────────────────────────────────────── -->
-<script>
-(function () {
-  var quotes = [
-    "The purpose of computing is insight, not numbers. — Richard Hamming",
-    "A person who never made a mistake never tried anything new. — Albert Einstein",
-    "In mathematics the art of proposing a question must be held of higher value than solving it. — Georg Cantor",
-    "The most important thing is not to stop questioning. — Albert Einstein",
-    "The science of today is the technology of tomorrow. — Edward Teller",
-    "Pure mathematics is, in its way, the poetry of logical ideas. — Albert Einstein",
-    "It always seems impossible until it's done. — Nelson Mandela",
-    "Research is to see what everybody else has seen, and to think what nobody else has thought. — Albert Szent-Györgyi",
-    "Equipped with his five senses, man explores the universe around him and calls the adventure Science. — Edwin Hubble",
-    "Somewhere, something incredible is waiting to be known. — Sharon Begley",
-    "The function of education is to teach one to think intensively and to think critically. — Martin Luther King Jr.",
-    "What we know is a drop, what we don't know is an ocean. — Isaac Newton",
-    "An investment in knowledge pays the best interest. — Benjamin Franklin",
-    "The first principle is that you must not fool yourself — and you are the easiest person to fool. — Richard Feynman",
-    "Not everything that counts can be counted, and not everything that can be counted counts. — William Bruce Cameron",
-    "The whole of science is nothing more than a refinement of everyday thinking. — Albert Einstein",
-    "In the middle of difficulty lies opportunity. — Albert Einstein",
-    "Simplicity is the ultimate sophistication. — Leonardo da Vinci",
-    "The best way to predict the future is to invent it. — Alan Kay",
-    "Programs must be written for people to read, and only incidentally for machines to execute. — Abelson & Sussman",
-  ];
-  var el = document.getElementById('footer-quote');
-  if (el) {
-    el.textContent = quotes[Math.floor(Math.random() * quotes.length)];
-  }
-})();
-</script>
+</main>
 {% endblock content %}
