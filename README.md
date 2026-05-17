@@ -266,6 +266,30 @@ The `static/slides/demo/index.html` deck is a fully-styled template — copy the
 - JetBrains Mono with ligatures
 - `?` for the shortcuts overlay
 
+#### Shared slide themes
+
+The same theme files live in both this repo and `zola-class`, under
+`static/slides/_themes/`:
+
+| Theme      | File          | Look                                                                                  |
+|------------|---------------|---------------------------------------------------------------------------------------|
+| `clean`    | `clean.css`   | **Default.** Editorial serif (Newsreader) + Inter; auto-switches by system theme.    |
+| `night`    | `night.css`   | Tokyo-night dark, Playfair Display titles, Nanum Gothic body, lime accent.            |
+| `terminal` | `terminal.css`| All JetBrains Mono, neovim-aligned, `# / ## / ###` heading prefixes.                  |
+
+Each deck links one theme + the shared helpers script:
+
+```html
+<!-- adjust the ../ count to match your deck's directory depth -->
+<link rel="stylesheet" href="../_themes/clean.css">
+<script src="../_themes/deck-utils.js" defer></script>
+```
+
+`deck-utils.js` adds copy buttons on every `<pre>`, renders mermaid
+fences as SVG (lazy-loaded only when the deck has any), draws an
+arrow-key indicator and a slide counter, and wires `?` to a help
+overlay. It detects existing inline copy buttons and skips double-up.
+
 **Step 2 — REQUIRED to list it on `/slides/`.** Add an entry to the `talks` array in `config.toml` under `[extra]`:
 
 ```toml
