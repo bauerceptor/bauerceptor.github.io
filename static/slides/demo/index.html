@@ -57,6 +57,20 @@
     /* Top padding clears the absolutely-positioned .slide-id badge */
     .reveal section { padding: 4.5rem 1rem 1rem; }
 
+    /* Slide number — bottom-left, JetBrains Mono, muted */
+    .reveal .slide-number {
+      left: 14px;
+      right: auto;
+      bottom: 12px;
+      top: auto;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      color: var(--fg-3);
+      background: transparent;
+      padding: 0;
+    }
+
     .reveal h1,
     .reveal h2,
     .reveal h3,
@@ -458,7 +472,7 @@ ESC Slide overview
       hash: true,
       controls: false,       // we render our own indicator
       progress: true,
-      slideNumber: false,
+      slideNumber: 'c/t',     // shown bottom-left via .reveal .slide-number CSS
       center: false,
       transition: "slide",
       navigationMode: "default",

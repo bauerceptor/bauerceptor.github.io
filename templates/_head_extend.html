@@ -28,6 +28,23 @@
 <script defer src="/js/copy-code.js"></script>
 <script defer src="/js/shortcuts.js"></script>
 
+<!-- Convert raw ```mermaid fences to <div class="mermaid"> so the Serene
+     theme's mermaid.initialize({startOnLoad: true}) picks them up alongside
+     its existing {{ mermaid() }} shortcode output. Runs before mermaid's
+     own DOMContentLoaded handler. -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("pre > code.language-mermaid").forEach(function (code) {
+    var pre = code.parentElement;
+    if (!pre) return;
+    var div = document.createElement("div");
+    div.className = "mermaid";
+    div.textContent = code.textContent;
+    pre.replaceWith(div);
+  });
+});
+</script>
+
 <!-- Hello-curious-developer console message -->
 <script>
 (function () {
