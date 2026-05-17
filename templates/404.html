@@ -4,87 +4,168 @@
 {% block body_class %}page-404{% endblock body_class %}
 
 {% block content %}
-<main class="error-page">
-  <p class="error-page__code">HTTP/1.1 404</p>
-  <h1 class="error-page__title">Not found.</h1>
-  <p class="error-page__lede">
-    The page you requested isn't here. Either it never existed, or it moved and I didn't redirect.
-  </p>
+<main class="err">
+  <p class="err__http">HTTP/1.1 404</p>
 
-  <ul class="error-page__suggestions">
-    <li><a href="/">Home</a></li>
-    <li><a href="/research/">Research</a></li>
-    <li><a href="/projects/">Projects</a></li>
-    <li><a href="/posts/">Writing</a></li>
-    <li><a href="/notes/">Notes</a></li>
-  </ul>
+  <h1 class="err__digits" aria-label="404">
+    <span class="err__d" style="--i:0">4</span><span class="err__d" style="--i:1">0</span><span class="err__d" style="--i:2">4</span>
+  </h1>
 
-  <p class="error-page__hint">Or press <kbd>?</kbd> for keyboard shortcuts.</p>
+  <p class="err__title">Not found.</p>
+
+  <p class="err__asked" id="err-asked"></p>
+
+  <nav class="err__nav" aria-label="Recover">
+    <a href="/">Home</a>
+    <a href="/research/">Research</a>
+    <a href="/projects/">Projects</a>
+    <a href="/posts/">Writing</a>
+    <a href="/notes/">Notes</a>
+    <a href="/slides/">Slides</a>
+    <a href="/resume/">Resume</a>
+  </nav>
+
+  <p class="err__hint">Press <kbd>?</kbd> for keyboard shortcuts.</p>
 </main>
+
+<script>
+  (function () {
+    var el = document.getElementById('err-asked');
+    if (!el) return;
+    var path = decodeURIComponent(window.location.pathname || "/");
+    /* Trim a trailing /404 segment if a 404 file is served at that path. */
+    path = path.replace(/\/404(\.html)?\/?$/, "");
+    if (!path || path === "/") {
+      el.textContent = "";
+    } else {
+      el.innerHTML = 'You asked for <span class="err__path">' + path.replace(/[<>&]/g, function (c) {
+        return { "<":"&lt;", ">":"&gt;", "&":"&amp;" }[c];
+      }) + '</span>.';
+    }
+  })();
+</script>
 
 <style>
   body.page-404 .serene-header,
   body.page-404 header.site-header { display: none; }
 
-  .error-page {
-    max-width: 60ch;
+  .err {
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: clamp(4rem, 12vw, 8rem) clamp(1.25rem, 4vw, 2rem) var(--sp-9);
+    padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 4vw, 2rem) clamp(2rem, 5vw, 4rem);
+    align-items: start;
   }
-  .error-page__code {
+
+  .err__http {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--fg-3);
-    margin: 0 0 var(--sp-5);
+    margin: 0;
+    grid-row: 1;
   }
-  .error-page__title {
+
+  /* The digits row — almost edge to edge, optical 72, serif. */
+  .err__digits {
+    grid-row: 2;
+    align-self: center;
+    margin: 0;
+    text-align: center;
     font-family: var(--font-serif);
     font-variation-settings: "opsz" 72;
-    font-size: clamp(3rem, 9vw, 5rem);
     font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 1;
-    margin: 0 0 var(--sp-5);
+    font-size: clamp(8rem, 32vw, 22rem);
+    letter-spacing: -0.04em;
+    line-height: 0.85;
+    color: var(--fg);
+    user-select: none;
+    /* Subtle accent for the middle digit only */
   }
-  .error-page__lede {
-    font-size: var(--text-lg);
+  .err__digits .err__d:nth-child(2) { color: var(--accent); }
+
+  /* Drop-in animation: each digit translates down with a slight overshoot.
+     Reduced-motion is killed by the global rule in _custom_css.html. */
+  .err__d {
+    display: inline-block;
+    transform: translateY(-32px);
+    opacity: 0;
+    animation: err-settle 760ms cubic-bezier(0.34, 1.4, 0.64, 1) both;
+    animation-delay: calc(var(--i, 0) * 110ms);
+  }
+
+  @keyframes err-settle {
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .err__title {
+    grid-row: 3;
+    font-family: var(--font-serif);
+    font-variation-settings: "opsz" 32;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 500;
+    color: var(--fg);
+    margin: 0 0 var(--sp-3);
+    text-align: center;
+    letter-spacing: -0.015em;
+    animation: err-fade 520ms 380ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .err__asked {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--fg-3);
+    text-align: center;
+    margin: 0 0 var(--sp-6);
+    letter-spacing: 0.02em;
+    min-height: 1em;
+    animation: err-fade 520ms 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .err__path {
     color: var(--fg-2);
-    line-height: 1.55;
-    margin: 0 0 var(--sp-8);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
   }
-  .error-page__suggestions {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 var(--sp-8);
+
+  .err__nav {
     display: flex;
     flex-wrap: wrap;
     gap: var(--sp-3) var(--sp-5);
+    justify-content: center;
+    padding: var(--sp-3) 0;
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
-    padding-top: var(--sp-3);
-    padding-bottom: var(--sp-3);
+    margin: 0 0 var(--sp-5);
+    animation: err-fade 520ms 580ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-  .error-page__suggestions a {
+  .err__nav a {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--fg-2);
     text-decoration: none;
     transition: color 180ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .error-page__suggestions a:hover,
-  .error-page__suggestions a:focus-visible { color: var(--accent); }
+  .err__nav a:hover,
+  .err__nav a:focus-visible { color: var(--accent); }
 
-  .error-page__hint {
+  .err__hint {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     color: var(--fg-3);
+    text-align: center;
+    margin: 0;
     letter-spacing: 0.02em;
+    animation: err-fade 520ms 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-  .error-page__hint kbd {
+  .err__hint kbd {
     font-family: var(--font-mono);
     background: var(--bg-2);
     border: 1px solid var(--rule);
@@ -92,6 +173,11 @@
     padding: 1px 6px;
     font-size: inherit;
     color: var(--fg-2);
+  }
+
+  @keyframes err-fade {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 </style>
 {% endblock content %}

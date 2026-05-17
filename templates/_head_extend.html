@@ -2,11 +2,12 @@
   _head_extend.html — per-page <head> extras.
 -->
 
-<!-- Favicon — separate SVG per colour scheme. Browsers pick based on system theme. -->
+<!-- Favicon — order matters: an unconditional SVG first so every browser gets one,
+     then media-aware overrides for browsers that honour `media` on rel=icon (Chrome/Edge ≥95). -->
+<link rel="icon" type="image/svg+xml" href="/img/bauerceptor-light.svg">
 <link rel="icon" type="image/svg+xml" href="/img/bauerceptor-light.svg" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/svg+xml" href="/img/bauerceptor-dark.svg"  media="(prefers-color-scheme: dark)">
-<!-- Fallback for browsers that don't honour the media attribute on rel="icon" -->
-<link rel="icon" type="image/svg+xml" href="/img/bauerceptor-light.svg">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
 
 <!-- Syntax highlight sheets. Zola with style="class" generates one CSS file per theme. -->
 <link
