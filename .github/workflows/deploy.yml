@@ -39,14 +39,28 @@ jobs:
 
       - name: Debug submodule state
         run: |
-          echo "--- git submodule status ---"
-          git submodule status || true
-          echo "--- ls themes/ ---"
-          ls -la themes/ || true
-          echo "--- ls themes/serene/ ---"
-          ls -la themes/serene/ || true
-          echo "--- .gitmodules ---"
-          cat .gitmodules || true
+          {
+            echo '### git submodule status'
+            echo '```'
+            git submodule status 2>&1 || true
+            echo '```'
+            echo '### ls themes/'
+            echo '```'
+            ls -la themes/ 2>&1 || true
+            echo '```'
+            echo '### ls themes/serene/'
+            echo '```'
+            ls -la themes/serene/ 2>&1 || true
+            echo '```'
+            echo '### .gitmodules'
+            echo '```'
+            cat .gitmodules 2>&1 || true
+            echo '```'
+            echo '### .git/config (submodule sections)'
+            echo '```'
+            git config --list | grep -i submodule || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Install Zola
         uses: taiki-e/install-action@v2
