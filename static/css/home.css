@@ -158,6 +158,13 @@
   border-radius: 2px;
   flex-shrink: 0;
 }
+
+.home-list__ext {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--fg-3);
+  margin-left: 0.25em;
+}
 .home-list__link:hover,
 .home-list__link:focus-visible { color: var(--accent); }
 

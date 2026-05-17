@@ -87,6 +87,12 @@ recent         = true
 recent_max     = 5
 recent_more_text = "All posts →"
 
+# Slides & talks — surfaced on the home page in a "Slides & talks" block.
+# Links open in a new tab. Drop the deck under static/slides/<name>/index.html.
+talks = [
+    { title = "Reveal.js · Demo deck", description = "Template that matches the site's typography, with a live arrow-key indicator.", url = "/slides/demo/", date = "2026-05-18" },
+]
+
 # Giscus comments — uncomment when configured.
 # giscus_repo           = "bauerceptor/bauerceptor.github.io"
 # giscus_repo_id        = ""

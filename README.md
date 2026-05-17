@@ -251,7 +251,13 @@ PDF files go in `static/resume/` (e.g. `static/resume/hassan-aziz-cv.pdf`).
 
 ### Slide deck → `/slides/<deck>/`
 
-Drop a self-contained reveal.js HTML file at `static/slides/<deck>/index.html`. Zola serves it as-is.
+**Step 1 — REQUIRED — drop the HTML file.** Reveal.js decks are self-contained HTML files. Place yours at:
+
+```
+static/slides/<deck-name>/index.html
+```
+
+Zola serves it as-is. URL becomes `https://bauerceptor.github.io/slides/<deck-name>/`.
 
 The `static/slides/demo/index.html` deck is a fully-styled template — copy the folder and edit. It includes:
 - Custom arrow-key indicator (bottom-right) that highlights live based on available routes
@@ -260,9 +266,20 @@ The `static/slides/demo/index.html` deck is a fully-styled template — copy the
 - JetBrains Mono with ligatures
 - `?` for the shortcuts overlay
 
-URL: `https://bauerceptor.github.io/slides/<deck>/`.
+**Step 2 — OPTIONAL but recommended — surface it on the home page.** Add an entry to the `talks` array in `config.toml` under `[extra]`:
 
-**Optional — embed slides in a post or project page** via the shortcode:
+```toml
+talks = [
+    { title = "Reveal.js · Demo deck", description = "One-line description.", url = "/slides/demo/", date = "2026-05-18" },
+    { title = "Your next talk",         description = "...",                   url = "/slides/your-deck/", date = "2026-06-01" },
+]
+```
+
+Required: `title`, `url`. Optional: `description`, `date` (YYYY-MM-DD string).
+
+The home page renders a "Slides & talks" block listing every entry. Clicks open in a new tab. The block is hidden automatically when `talks` is empty or missing.
+
+**Step 3 — OPTIONAL — embed a deck inline in a post or project page** via the shortcode:
 
 ```
 {{ slides(src="/slides/your-deck/index.html") }}
@@ -309,6 +326,30 @@ To change the accent color: edit `--accent` in both the `:root` and `html.dark` 
 1. Add the family to the `<link>` URL.
 2. Add a CSS variable to `templates/_custom_css.html`.
 3. Reference the variable in your CSS.
+
+### Favicon
+
+The site ships two SVG favicons that swap automatically with the user's system theme:
+
+```
+static/img/bauerceptor-light.svg   ← shown when system is in light mode
+static/img/bauerceptor-dark.svg    ← shown when system is in dark mode
+```
+
+Wiring lives in `templates/_head_extend.html`:
+
+```html
+<link rel="icon" type="image/svg+xml" href="/img/bauerceptor-light.svg" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/svg+xml" href="/img/bauerceptor-dark.svg"  media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/svg+xml" href="/img/bauerceptor-light.svg">   <!-- fallback -->
+```
+
+**To replace:**
+1. Drop your new SVGs at the same paths (or rename and update the `href`s in `_head_extend.html`).
+2. The `-light` file should render well against light backgrounds (typically a dark icon); the `-dark` file should render well against dark backgrounds (typically a light icon).
+3. Keep SVG. Browsers cache favicons aggressively — a hard reload (`Cmd-Shift-R`) is usually needed to see the change.
+
+For raster fallbacks (`.ico` / `.png` for older browsers), add them in `_head_extend.html` after the SVG `<link>`s.
 
 ### Syntax highlighting
 

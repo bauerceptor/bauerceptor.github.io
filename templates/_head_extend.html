@@ -2,6 +2,12 @@
   _head_extend.html — per-page <head> extras.
 -->
 
+<!-- Favicon — separate SVG per colour scheme. Browsers pick based on system theme. -->
+<link rel="icon" type="image/svg+xml" href="/img/bauerceptor-light.svg" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/svg+xml" href="/img/bauerceptor-dark.svg"  media="(prefers-color-scheme: dark)">
+<!-- Fallback for browsers that don't honour the media attribute on rel="icon" -->
+<link rel="icon" type="image/svg+xml" href="/img/bauerceptor-light.svg">
+
 <!-- Syntax highlight sheets. Zola with style="class" generates one CSS file per theme. -->
 <link
   id="hl-light"
