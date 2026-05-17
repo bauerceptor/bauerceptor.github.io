@@ -1,0 +1,40 @@
+{#
+  templates/projects/section.html
+  Top-level /projects/ page — lists all project sub-sections as cards.
+  Each project lives as content/projects/project-name/_index.md
+  and has its own docs pages inside.
+#}
+{% extends "serene/templates/base.html" %}
+
+{% block title %}Projects · {{ config.title }}{% endblock title %}
+
+{% block body_class %}section-projects{% endblock body_class %}
+
+{% block content %}
+<div class="projects-index">
+  <h1>{{ section.title | default(value="Projects") }}</h1>
+  {%- if section.description %}
+  <p class="projects-index__desc">{{ section.description }}</p>
+  {%- endif %}
+
+  <div class="projects-grid">
+    {%- for sub_path in section.subsections %}
+      {%- set sub = get_section(path=sub_path) %}
+      <a href="{{ sub.permalink }}" class="project-card">
+        <span class="project-card__tag">
+          {{ sub.extra.category | default(value="Project") }}
+        </span>
+        <h2 class="project-card__title">{{ sub.title }}</h2>
+        {%- if sub.description %}
+        <p class="project-card__desc">{{ sub.description | truncate(length=110) }}</p>
+        {%- endif %}
+        <span class="project-card__cta">Open docs →</span>
+      </a>
+    {%- else %}
+    <p style="opacity:0.6; grid-column:1/-1;">
+      No projects yet. Add a folder under <code>content/projects/</code>.
+    </p>
+    {%- endfor %}
+  </div>
+</div>
+{% endblock content %}

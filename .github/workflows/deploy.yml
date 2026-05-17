@@ -1,0 +1,56 @@
+# .github/workflows/deploy.yml
+# Builds the Zola site and deploys to GitHub Pages.
+# Triggered on every push to main.
+#
+# Setup steps (one-time):
+#   1. Go to repo Settings → Pages → Source: GitHub Actions
+#   2. The workflow handles everything else automatically.
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Allow only one concurrent deployment
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive   # fetches themes/serene at the pinned commit
+          fetch-depth: 0
+
+      - name: Install Zola
+        uses: taiki-e/install-action@v2
+        with:
+          tool: zola@0.19.2       # pin Zola version; update deliberately
+
+      - name: Build site
+        run: zola build
+        # Zola outputs to ./public by default
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

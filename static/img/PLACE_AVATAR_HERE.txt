@@ -1,0 +1,3 @@
+Place your avatar image here as `avatar.webp` (or any web format).
+Recommended: square, at least 400×400px, compressed WebP.
+Referenced in config.toml as `avatar = "img/avatar.webp"`.

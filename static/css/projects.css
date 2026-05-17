@@ -1,0 +1,271 @@
+/*
+ * projects.css
+ * EasyDocs-style two-column layout for project documentation pages.
+ * Loaded on /projects/* pages.
+ * Body font: Mulish (set in _custom_css.html via body class selector).
+ */
+
+/* ── Layout shell ───────────────────────────────────────────────────────── */
+.docs-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: auto 1fr;
+  min-height: 100dvh;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Full-width top bar (project title + breadcrumb) */
+.docs-topbar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.5rem;
+  border-bottom: 1px solid rgba(128,128,128,0.15);
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: inherit;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.docs-topbar__project {
+  font-family: "Mulish", system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: inherit;
+}
+
+.docs-topbar__breadcrumb {
+  font-size: 0.82rem;
+  opacity: 0.6;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.docs-topbar__breadcrumb a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.docs-topbar__breadcrumb a:hover { opacity: 1; }
+.docs-topbar__breadcrumb .sep    { opacity: 0.4; }
+
+/* ── Sidebar ────────────────────────────────────────────────────────────── */
+.docs-sidebar {
+  grid-column: 1;
+  grid-row: 2;
+  padding: 1.5rem 0;
+  border-right: 1px solid rgba(128,128,128,0.15);
+  position: sticky;
+  top: 3.5rem; /* height of topbar */
+  max-height: calc(100dvh - 3.5rem);
+  overflow-y: auto;
+  /* Subtle scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(128,128,128,0.2) transparent;
+}
+
+.docs-sidebar::-webkit-scrollbar         { width: 4px; }
+.docs-sidebar::-webkit-scrollbar-thumb   { background: rgba(128,128,128,0.2); border-radius: 2px; }
+
+/* Sidebar section group label */
+.sidebar-group {
+  margin-bottom: 0.25rem;
+}
+
+.sidebar-group__label {
+  font-family: "Mulish", system-ui, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  padding: 0.85rem 1.25rem 0.3rem;
+  display: block;
+}
+
+/* Sidebar link */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.38rem 1.25rem;
+  font-family: "Mulish", system-ui, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: inherit;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  opacity: 0.75;
+}
+
+.sidebar-link:hover {
+  background: rgba(128,128,128,0.07);
+  opacity: 1;
+}
+
+/* Active page */
+.sidebar-link--active {
+  border-left-color: var(--primary-color, #2a6496);
+  color: var(--primary-color, #2a6496);
+  font-weight: 700;
+  opacity: 1;
+}
+
+html.dark .sidebar-link--active {
+  color: var(--primary-color, #6aacdf);
+  border-left-color: var(--primary-color, #6aacdf);
+}
+
+/* Nested child links (one level deep is enough) */
+.sidebar-link--child {
+  padding-left: 2rem;
+  font-size: 0.84rem;
+}
+
+/* ── Main content area ──────────────────────────────────────────────────── */
+.docs-content {
+  grid-column: 2;
+  grid-row: 2;
+  padding: 2.5rem 3rem 5rem;
+  min-width: 0; /* prevent overflow */
+}
+
+/* Prose inside docs pages uses Mulish */
+.docs-content .prose,
+.docs-content p,
+.docs-content li {
+  font-family: "Mulish", system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.docs-content h1,
+.docs-content h2,
+.docs-content h3,
+.docs-content h4 {
+  font-family: "Mulish", system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.docs-content h1 { font-size: 2rem;   margin-top: 0; }
+.docs-content h2 { font-size: 1.4rem; margin-top: 2.5rem; }
+.docs-content h3 { font-size: 1.15rem; margin-top: 2rem; }
+
+/* Section divider under h2 */
+.docs-content h2 {
+  border-bottom: 1px solid rgba(128,128,128,0.15);
+  padding-bottom: 0.4rem;
+}
+
+/* ── Projects index (section page showing all projects) ─────────────────── */
+.projects-index {
+  max-width: 900px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+}
+
+.projects-index h1 {
+  font-family: "Mulish", system-ui, sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.projects-index__desc {
+  opacity: 0.65;
+  margin-bottom: 2.5rem;
+}
+
+/* Project card grid on index */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.project-card {
+  border: 1px solid rgba(128,128,128,0.18);
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.project-card:hover {
+  border-color: var(--primary-color, #2a6496);
+  transform: translateY(-2px);
+}
+
+.project-card__tag {
+  font-family: var(--code-font, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-color, #2a6496);
+  opacity: 0.85;
+}
+
+html.dark .project-card__tag { color: var(--primary-color, #6aacdf); }
+
+.project-card__title {
+  font-family: "Mulish", system-ui, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.project-card__desc {
+  font-size: 0.88rem;
+  opacity: 0.65;
+  line-height: 1.55;
+  flex: 1;
+}
+
+.project-card__cta {
+  font-family: var(--code-font, monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--primary-color, #2a6496);
+  margin-top: 0.25rem;
+}
+
+html.dark .project-card__cta { color: var(--primary-color, #6aacdf); }
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .docs-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .docs-sidebar {
+    grid-column: 1;
+    grid-row: 2;
+    position: static;
+    max-height: none;
+    border-right: none;
+    border-bottom: 1px solid rgba(128,128,128,0.15);
+    padding: 1rem 0;
+  }
+
+  .docs-content {
+    grid-column: 1;
+    grid-row: 3;
+    padding: 1.5rem 1.25rem 4rem;
+  }
+}

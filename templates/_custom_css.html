@@ -1,0 +1,59 @@
+<!--
+  _custom_css.html
+  Serene's official hook for CSS variable overrides and section-specific fonts.
+  Loaded on every page. Keep structural changes minimal here — heavy custom
+  styles live in static/css/ and are loaded conditionally per section via
+  _head_extend.html.
+-->
+<style>
+  /* ── Global font assignments ─────────────────────────────────────────── */
+  :root {
+    --main-font: "Source Sans 3", system-ui, sans-serif;
+    --code-font: "JetBrains Mono", "Fira Code", monospace;
+  }
+
+  /* ── Serene colour token overrides ─────────────────────────────────────
+     These match Serene's internal variable names.
+     Tweak --primary-color to your preferred accent.             */
+  :root {
+    --primary-color: #2a6496;   /* academic blue — change freely */
+  }
+
+  html.dark {
+    --primary-color: #6aacdf;
+  }
+
+  /* ── Giallo (syntax highlight) CSS swap ────────────────────────────────
+     Zola generates /giallo-light.css and /giallo-dark.css.
+     We override the media attribute via JS in theme-toggle.js
+     so the correct sheet loads when the user switches themes.
+     The <link> tags themselves are injected in _head_extend.html. */
+
+  /* ── Research section: Frank Ruhl Libre body font ───────────────────── */
+  body.section-research,
+  body.section-research .prose {
+    font-family: "Frank Ruhl Libre", Georgia, serif;
+  }
+
+  /* ── Notes & Projects: Mulish body font ────────────────────────────── */
+  body.section-notes .prose,
+  body.section-projects .prose {
+    font-family: "Mulish", system-ui, sans-serif;
+  }
+
+  /* ── Resume: Carme ──────────────────────────────────────────────────── */
+  body.section-resume {
+    font-family: "Carme", Georgia, serif;
+  }
+
+  /* ── Homepage title: Quattrocento ──────────────────────────────────── */
+  .home-title {
+    font-family: "Quattrocento", Georgia, serif;
+  }
+
+  /* ── Hamburger menu: Ubuntu ─────────────────────────────────────────── */
+  .menu-overlay a,
+  .menu-overlay .menu-label {
+    font-family: "Ubuntu", system-ui, sans-serif;
+  }
+</style>

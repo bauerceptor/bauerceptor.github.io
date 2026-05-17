@@ -1,0 +1,36 @@
+{#
+  templates/shortcodes/slides.html
+  Embeds a slides file (Reveal.js or any self-contained HTML) in an iframe.
+
+  Usage in Markdown:
+    {{ slides(src="/slides/cs101/module1/lec01/index.html") }}
+    {{ slides(src="/slides/cs101/module1/lec01/index.html", height="600") }}
+    {{ slides(src="/slides/cs101/module1/lec01/index.html", height="600", title="Lecture 1 Slides") }}
+
+  Parameters:
+    src    — full path from site root to the slides HTML file (required)
+    height — iframe height in px, default 540
+    title  — accessible title for the iframe, default "Slides"
+#}
+{%- set h     = height | default(value="540") %}
+{%- set label = title  | default(value="Slides") %}
+
+<div class="slides-embed" style="margin: 2rem 0;">
+  <div class="slides-embed__frame-wrap"
+       style="position:relative; width:100%; height:{{ h }}px; border-radius:8px; overflow:hidden;
+              border:1px solid rgba(128,128,128,0.2);">
+    <iframe
+      src="{{ src }}"
+      title="{{ label }}"
+      width="100%"
+      height="{{ h }}"
+      style="border:none; display:block;"
+      allowfullscreen
+      loading="lazy">
+    </iframe>
+  </div>
+  <p class="slides-embed__caption"
+     style="font-size:0.75rem; opacity:0.55; margin-top:0.5rem; text-align:right; font-family:var(--code-font,monospace);">
+    <a href="{{ src }}" target="_blank" rel="noopener">Open fullscreen ↗</a>
+  </p>
+</div>

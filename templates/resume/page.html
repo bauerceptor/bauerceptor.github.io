@@ -1,0 +1,64 @@
+{#
+  templates/resume/page.html
+  Resume page at /resume/.
+  BelResume-inspired layout: name header, sections for experience,
+  education, skills, publications. Download button for /static/resume/*.pdf
+  Font: Carme (triggered by body class "section-resume").
+#}
+{% extends "serene/templates/base.html" %}
+
+{% block title %}Resume · {{ config.title }}{% endblock title %}
+
+{% block body_class %}section-resume{% endblock body_class %}
+
+{% block content %}
+<div class="resume-page">
+
+  {# ── Header ───────────────────────────────────────────────────────────── #}
+  <header class="resume-header">
+    <div>
+      <h1 class="resume-header__name">{{ page.extra.resume_name | default(value=config.extra.name) }}</h1>
+      {%- if page.extra.resume_title %}
+      <p class="resume-header__title">{{ page.extra.resume_title }}</p>
+      {%- endif %}
+    </div>
+    <div class="resume-header__links">
+      {%- for link in config.extra.links %}
+      {%- if link.name != "Google Scholar" %}
+      <a href="{{ link.url }}"
+         {% if link.url is starting_with("http") %}target="_blank" rel="noopener"{% endif %}>
+        {{ link.name }}
+      </a>
+      {%- endif %}
+      {%- endfor %}
+    </div>
+  </header>
+
+  {# ── Download button ──────────────────────────────────────────────────── #}
+  {%- if page.extra.resume_pdfs %}
+  <div style="margin-bottom:2rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
+    {%- for pdf in page.extra.resume_pdfs %}
+    <a href="{{ pdf.path }}" class="resume-download" download>
+      ↓ {{ pdf.label | default(value="Download PDF") }}
+    </a>
+    {%- endfor %}
+  </div>
+  {%- else %}
+  <a href="/resume/resume-1.pdf" class="resume-download" download>
+    ↓ Download PDF
+  </a>
+  {%- endif %}
+
+  {# ── Markdown body (the actual resume content) ────────────────────────── #}
+  {#
+    The resume body in content/resume/_index.md is written in Markdown.
+    Use heading level 2 (##) for section titles — they get .resume-section
+    styling via the CSS. The prose class applies Mulish reading styles.
+    See the sample content file for the expected structure.
+  #}
+  <div class="prose">
+    {{ page.content | safe }}
+  </div>
+
+</div>
+{% endblock content %}

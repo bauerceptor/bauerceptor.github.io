@@ -1,0 +1,7 @@
+Place your PDF resume files here.
+Example: resume-1.pdf
+
+The filename must match the path in content/resume/_index.md:
+  resume_pdfs = [{ path = "/resume/resume-1.pdf", label = "Download CV (PDF)" }]
+
+Files are served at /resume/filename.pdf

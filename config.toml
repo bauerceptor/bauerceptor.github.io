@@ -1,0 +1,106 @@
+base_url = "https://bauerceptor.github.io"
+title = "Your Name"
+description = "Researcher · Educator · Builder"
+default_language = "en"
+theme = "serene"
+compile_sass = true
+build_search_index = true
+generate_feeds = false
+feed_filenames = ["atom.xml"]
+
+[markdown]
+highlight_code = true
+render_emoji = true
+smart_punctuation = true
+external_links_target_blank = true
+external_links_nofollow = true
+
+[markdown.highlighting]
+# Use class-based output so our JS theme toggle can swap stylesheets.
+# Zola generates /giallo-light.css and /giallo-dark.css automatically.
+# We override these with our own versions (see static/css/giallo-light.css etc.)
+style = "class"
+light_theme = "GitHub Light"
+dark_theme = "One Dark Pro"
+
+[search]
+include_title = true
+include_description = true
+include_path = true
+include_content = true
+truncate_content_length = 100
+
+# ── Serene theme settings ────────────────────────────────────────────────────
+[extra]
+# Pin note: submodule is pinned to tag v5.6.3
+# To pin: git submodule add -b v5.6.3 https://github.com/isunjn/serene.git themes/serene
+# Then: cd themes/serene && git checkout v5.6.3
+
+lang = "en"
+theme = ""            # leave empty — toggle button shows by default
+display_id = false
+
+# Sections that appear in Serene's nav (the built-in top nav).
+# We also inject our own hamburger menu overlay for cross-site navigation.
+blog_section_path = "/posts"
+
+sections = [
+    { name = "Posts",    path = "/posts",    is_external = false },
+    { name = "Notes",    path = "/notes",    is_external = false },
+    { name = "Research", path = "/research", is_external = false },
+    { name = "Projects", path = "/projects", is_external = false },
+    { name = "Resume",   path = "/resume",   is_external = false },
+    { name = "Class ↗",  path = "https://bauerceptor.github.io/zola-class", is_external = true },
+]
+
+# Social / contact links — shown on homepage and in hamburger menu.
+# Replace placeholder values before deploying.
+links = [
+    { name = "GitHub",        icon = "github",   url = "https://github.com/PLACEHOLDER" },
+    { name = "Email",         icon = "email",    url = "mailto:PLACEHOLDER@example.com" },
+    { name = "Google Scholar",icon = "scholar",  url = "https://scholar.google.com/citations?user=PLACEHOLDER" },
+    { name = "Twitter / X",   icon = "twitter",  url = "https://twitter.com/PLACEHOLDER" },
+    { name = "LinkedIn",      icon = "linkedin", url = "https://linkedin.com/in/PLACEHOLDER" },
+]
+
+# ── Post / page defaults (can all be overridden in front matter) ─────────────
+toc              = true
+copy             = true      # copy-to-clipboard on code blocks; toggleable via our JS
+comment          = false     # set true once giscus is configured
+math             = false
+mermaid          = false
+reaction         = false
+back_to_top      = true
+show_reading_time = true
+
+outdate_alert      = false
+outdate_alert_days = 365
+outdate_alert_text_before = "This post was last updated "
+outdate_alert_text_after  = " days ago and may be out of date."
+
+date_format = "%b %-d, %Y"
+
+# ── Homepage ─────────────────────────────────────────────────────────────────
+# Serene's home.html uses `name`, `id`, `bio`, `avatar`.
+# We fully override home.html, so these are used by OUR template instead.
+name   = "Your Name"
+id     = "your-id"
+bio    = "PhD researcher in [Field] at [University]. I write about [topics], build [things], and teach [courses]."
+avatar = "img/avatar.webp"
+
+recent         = true
+recent_max     = 5
+recent_more_text = "All posts →"
+
+# ── Giscus (fill in after setting up giscus.app) ────────────────────────────
+# comment = true   ← uncomment in [extra] above once ready
+# giscus_repo           = "bauerceptor/bauerceptor.github.io"
+# giscus_repo_id        = "REPLACE_AFTER_SETUP"
+# giscus_category       = "Comments"
+# giscus_category_id    = "REPLACE_AFTER_SETUP"
+# giscus_mapping        = "pathname"
+# giscus_strict         = "0"
+# giscus_reactions      = "1"
+# giscus_emit_metadata  = "0"
+# giscus_input_position = "top"
+# giscus_lang           = "en"

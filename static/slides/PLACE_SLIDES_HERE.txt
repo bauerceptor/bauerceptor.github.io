@@ -1,0 +1,15 @@
+Place self-contained Reveal.js (or any HTML) slide decks here.
+Structure is up to you — depth is arbitrary.
+
+Examples:
+  slides/neurips-2025/index.html
+  slides/my-talk-short-name/index.html
+  slides/cs101/module1/lec01/index.html
+
+Embed in any Markdown page using the shortcode:
+  {{ slides(src="/slides/neurips-2025/index.html") }}
+  {{ slides(src="/slides/neurips-2025/index.html", height="600", title="My Talk") }}
+
+The slides file must be a self-contained HTML document.
+All assets it needs (images, fonts) should be either CDN-linked
+or placed in the same folder and referenced by relative paths.

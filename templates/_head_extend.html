@@ -1,0 +1,40 @@
+<!--
+  _head_extend.html
+  Serene loads this file's contents into every page's <head>.
+  Use it for: syntax highlight sheets, section CSS, any per-page head extras.
+-->
+
+<!-- ── Syntax highlight sheets (Giallo class-based) ─────────────────────────
+     JS in theme-toggle.js toggles the `media` attribute on these
+     to show the correct sheet for the current light/dark mode.         -->
+<link
+  id="hl-light"
+  rel="stylesheet"
+  href="/giallo-light.css"
+  media="(prefers-color-scheme: light)"
+>
+<link
+  id="hl-dark"
+  rel="stylesheet"
+  href="/giallo-dark.css"
+  media="(prefers-color-scheme: dark)"
+>
+
+<!-- ── Hamburger menu styles (loaded everywhere) ────────────────────────── -->
+<link rel="stylesheet" href="/css/menu.css">
+
+<!-- ── Section-specific stylesheets ────────────────────────────────────── -->
+{% set path = current_path | default(value="/") %}
+
+{% if path is starting_with("/research") %}
+<link rel="stylesheet" href="/css/research.css">
+{% elif path is starting_with("/projects") %}
+<link rel="stylesheet" href="/css/projects.css">
+{% elif path is starting_with("/resume") %}
+<link rel="stylesheet" href="/css/resume.css">
+{% elif path is starting_with("/notes") %}
+<link rel="stylesheet" href="/css/notes.css">
+{% endif %}
+
+<!-- ── Hamburger menu HTML (injected at end of <head>, rendered by JS) ── -->
+<!-- The actual menu DOM is injected into <body> by menu.js on DOMContentLoaded -->

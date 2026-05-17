@@ -1,0 +1,100 @@
+{#
+  templates/projects/single-section.html
+  The _index.md page for each individual project, e.g. /projects/demo-project/.
+  Shows the project overview text in the EasyDocs sidebar layout,
+  with the sidebar listing all doc pages in this project.
+
+  Zola renders a sub-section's _index.md with the template specified in
+  that _index.md's front matter. Set `template = "projects/single-section.html"`
+  in every project's _index.md.
+#}
+{% extends "serene/templates/base.html" %}
+
+{% block title %}{{ section.title }} · Projects · {{ config.title }}{% endblock title %}
+
+{% block body_class %}section-projects{% endblock body_class %}
+
+{% block content %}
+<div class="docs-layout">
+
+  {# ── Top bar ──────────────────────────────────────────────────────────── #}
+  <div class="docs-topbar">
+    <a href="{{ section.permalink }}" class="docs-topbar__project">
+      {{ section.title }}
+    </a>
+    <nav class="docs-topbar__breadcrumb" aria-label="Breadcrumb">
+      <a href="/projects/">Projects</a>
+      <span class="sep" aria-hidden="true">/</span>
+      <span aria-current="page">{{ section.title }}</span>
+    </nav>
+  </div>
+
+  {# ── Sidebar ──────────────────────────────────────────────────────────── #}
+  <aside class="docs-sidebar" aria-label="Documentation navigation">
+
+    <div class="sidebar-group">
+      <a href="{{ section.permalink }}"
+         class="sidebar-link sidebar-link--active">
+        Overview
+      </a>
+    </div>
+
+    {# Group pages by extra.sidebar_section, sorted by weight #}
+    {%- set ns = namespace(seen_groups=[]) %}
+    {%- for p in section.pages %}
+      {%- set grp = p.extra.sidebar_section | default(value="") %}
+      {%- if grp not in ns.seen_groups %}
+        {%- set ns.seen_groups = ns.seen_groups | concat(with=grp) %}
+
+        <div class="sidebar-group">
+          {%- if grp != "" %}
+          <span class="sidebar-group__label">{{ grp }}</span>
+          {%- endif %}
+          {%- for q in section.pages | filter(attribute="extra.sidebar_section", value=grp) %}
+          <a href="{{ q.permalink }}" class="sidebar-link">{{ q.title }}</a>
+          {%- endfor %}
+        </div>
+
+      {%- endif %}
+    {%- endfor %}
+
+  </aside>
+
+  {# ── Main content — project overview ─────────────────────────────────── #}
+  <main class="docs-content" id="main-content">
+    <h1>{{ section.title }}</h1>
+
+    {%- if section.extra.category %}
+    <p style="font-family:var(--code-font,monospace); font-size:0.72rem;
+              letter-spacing:0.08em; text-transform:uppercase;
+              opacity:0.5; margin-top:-0.5rem; margin-bottom:1.5rem;">
+      {{ section.extra.category }}
+    </p>
+    {%- endif %}
+
+    <div class="prose">
+      {{ section.content | safe }}
+    </div>
+
+    {# Quick-start links to first few pages #}
+    {%- if section.pages | length > 0 %}
+    <div style="margin-top:2.5rem; padding-top:1.5rem;
+                border-top:1px solid rgba(128,128,128,0.15);">
+      <p style="font-size:0.82rem; opacity:0.6; margin-bottom:0.75rem;">
+        Start reading:
+      </p>
+      {%- for p in section.pages | slice(end=3) %}
+      <a href="{{ p.permalink }}"
+         style="display:block; font-size:0.92rem; margin-bottom:0.4rem;
+                text-decoration:none; transition:opacity 0.15s;"
+         onmouseover="this.style.opacity='0.7'"
+         onmouseout="this.style.opacity='1'">
+        {{ p.title }} →
+      </a>
+      {%- endfor %}
+    </div>
+    {%- endif %}
+  </main>
+
+</div>
+{% endblock content %}

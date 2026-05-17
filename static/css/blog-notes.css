@@ -1,0 +1,65 @@
+/*
+ * blog-notes.css
+ * Loaded on /posts/* and /notes/* pages via _head_extend.html.
+ * Serene already provides solid base prose styles. This file
+ * handles only what we need to layer on top: small tweaks for
+ * readability and our font stack.
+ */
+
+/* Body font is Source Sans 3 (set globally in _custom_css.html).
+   We only need to ensure code blocks use JetBrains Mono and that
+   the reading width is comfortable. Serene's prose width is already
+   good; these are minor overrides.                                  */
+
+/* ── Prose width & spacing ──────────────────────────────────────────────── */
+.prose,
+article.post-content {
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.78;
+}
+
+/* ── Heading rhythm ─────────────────────────────────────────────────────── */
+.prose h1 { font-size: 2rem;   letter-spacing: -0.025em; }
+.prose h2 { font-size: 1.45rem; letter-spacing: -0.018em; margin-top: 2.5rem; }
+.prose h3 { font-size: 1.15rem; letter-spacing: -0.01em;  margin-top: 2rem; }
+
+/* ── Inline code ────────────────────────────────────────────────────────── */
+.prose code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.88em;
+}
+
+/* ── Blockquote ─────────────────────────────────────────────────────────── */
+.prose blockquote {
+  border-left-width: 3px;
+  font-style: italic;
+  opacity: 0.82;
+}
+
+/* ── Post metadata line ─────────────────────────────────────────────────── */
+.post-meta,
+.post-date {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  opacity: 0.55;
+}
+
+/* ── Tag chips in post headers ──────────────────────────────────────────── */
+.post-tags a,
+.taxonomy-tag {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  padding: 0.15em 0.5em;
+  border-radius: 3px;
+  border: 1px solid rgba(128,128,128,0.22);
+  text-decoration: none;
+  opacity: 0.75;
+  transition: opacity 0.15s ease;
+}
+
+.post-tags a:hover,
+.taxonomy-tag:hover {
+  opacity: 1;
+}

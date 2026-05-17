@@ -1,0 +1,36 @@
+/*
+ * notes.css
+ * Loaded on /notes/* pages via _head_extend.html.
+ * Notes share the blog-notes.css base. This file adds
+ * only the small distinctions for the notes section:
+ * slightly tighter layout and a note-type label.
+ */
+
+/* ── Note type label (speaker-notes, reference, etc.) ───────────────────── */
+.note-type-label {
+  display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2em 0.6em;
+  border-radius: 3px;
+  border: 1px solid rgba(128,128,128,0.2);
+  opacity: 0.65;
+  margin-bottom: 0.75rem;
+}
+
+/* ── Horizontal rule used as slide separator in speaker notes ───────────── */
+.prose hr {
+  border: none;
+  border-top: 1px dashed rgba(128,128,128,0.25);
+  margin: 2rem 0;
+}
+
+/* ── Slide heading label (## Slide N — Title) ───────────────────────────── */
+.prose h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
