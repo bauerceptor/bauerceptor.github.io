@@ -6,12 +6,12 @@ insert_anchor_links = "none"
 [extra]
 lang         = "en"
 resume_name  = "Hassan Aziz"
-resume_title = "ML / robotics / systems / security researcher · builder"
+resume_title = "AI / robotics / systems / security researcher · builder"
 
 # Spec-sheet rows — render below the header.
 location    = "—"
 affiliation = "—"
-focus       = "Machine learning, robotics, systems, security, networked systems"
+focus       = "AI, robotics, systems, security, networked systems"
 languages   = "—"
 
 # Drop PDFs in static/resume/ then list them here.

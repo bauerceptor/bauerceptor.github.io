@@ -37,4 +37,4 @@ Editorial-technical. Print-influenced. A serif for names and titles (researcher'
 - `/resume/` — single-page CV with PDF download.
 
 ## Areas of focus
-Machine learning, robotics, systems, security, networked systems. The breadth is the point — not a single-track ML person.
+AI, robotics, systems, security, networked systems. The breadth is the point — not a single-track AI person.

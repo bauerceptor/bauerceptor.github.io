@@ -1,6 +1,6 @@
 base_url = "https://bauerceptor.github.io"
 title = "Hassan Aziz"
-description = "Machine learning, robotics, security, and networked systems."
+description = "AI, robotics, security, and networked systems."
 default_language = "en"
 theme = "serene"
 compile_sass = true
@@ -49,6 +49,7 @@ sections = [
     { name = "Writing",  path = "/posts",    is_external = false },
     { name = "Notes",    path = "/notes",    is_external = false },
     { name = "Resume",   path = "/resume",   is_external = false },
+    { name = "Class",    path = "https://bauerceptor.github.io/zola-class/", is_external = true },
 ]
 
 links = [
@@ -79,7 +80,7 @@ date_format = "%b %-d, %Y"
 # Homepage copy
 name   = "Hassan Aziz"
 id     = "hassan-aziz"
-bio    = "Researcher and builder working across machine learning, robotics, security, and networked systems. I prefer hard problems over polished ones."
+bio    = "Researcher and builder working across AI, robotics, security, and networked systems. I prefer hard problems over polished ones."
 avatar = "img/avatar.webp"
 
 recent         = true
