@@ -53,8 +53,13 @@ jobs:
           tool: zola@0.19.2       # pin Zola version; update deliberately
 
       - name: Build site
-        run: zola build
-        # Zola outputs to ./public by default
+        run: |
+          echo "::error title=pwd::$(pwd)"
+          echo "::error title=ls_root::$(ls -la 2>&1 | tr '\n' '|')"
+          echo "::error title=ls_themes_serene_pre::$(ls -la themes/serene/ 2>&1 | tr '\n' '|')"
+          echo "::error title=stat_theme_toml::$(stat themes/serene/theme.toml 2>&1 | tr '\n' '|')"
+          echo "::error title=zola_version::$(zola --version 2>&1)"
+          zola build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
