@@ -37,6 +37,17 @@ jobs:
           submodules: recursive   # fetches themes/serene at the pinned commit
           fetch-depth: 0
 
+      - name: Debug submodule state
+        run: |
+          echo "--- git submodule status ---"
+          git submodule status || true
+          echo "--- ls themes/ ---"
+          ls -la themes/ || true
+          echo "--- ls themes/serene/ ---"
+          ls -la themes/serene/ || true
+          echo "--- .gitmodules ---"
+          cat .gitmodules || true
+
       - name: Install Zola
         uses: taiki-e/install-action@v2
         with:
