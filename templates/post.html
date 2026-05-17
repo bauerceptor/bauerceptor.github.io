@@ -2,16 +2,8 @@
 
 {# Custom individual post template for /posts and /notes. Supports KaTeX. #}
 
-{%- set is_notes = current_path is starting_with("/notes") %}
-{%- if is_notes %}
-  {%- set_global parent_section = get_section(path="notes/_index.md", metadata_only=true) %}
-{%- else %}
-  {%- set_global parent_section = get_section(path="posts/_index.md", metadata_only=true) %}
-{%- endif %}
-{%- set date_fmt = parent_section.extra.date_format | default(value="%b %-d, %Y") %}
-
 {% block title %}{{ page.title }} · {{ config.title }}{% endblock title %}
-{% block body_class %}{% if is_notes %}section-notes{% else %}section-posts{% endif %} page-post{% endblock body_class %}
+{% block body_class %}{% if current_path is starting_with("/notes") %}section-notes{% else %}section-posts{% endif %} page-post{% endblock body_class %}
 
 {% block head %}
 {%- if page.extra.math %}
@@ -35,6 +27,14 @@
 {% endblock head %}
 
 {% block content %}
+{%- set is_notes = current_path is starting_with("/notes") %}
+{%- if is_notes %}
+  {%- set parent_section = get_section(path="notes/_index.md", metadata_only=true) %}
+{%- else %}
+  {%- set parent_section = get_section(path="posts/_index.md", metadata_only=true) %}
+{%- endif %}
+{%- set date_fmt = parent_section.extra.date_format | default(value="%b %-d, %Y") %}
+
 {%- set show_toc = true %}
 {%- if page.extra.toc is defined %}{% set show_toc = page.extra.toc %}{% endif %}
 {%- set has_toc = show_toc and page.toc and page.toc | length > 0 %}

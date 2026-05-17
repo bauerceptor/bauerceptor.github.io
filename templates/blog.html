@@ -2,12 +2,12 @@
 
 {# Custom listing for /posts and /notes — year-grouped lab-notebook layout. #}
 
-{%- set is_notes = section.path is starting_with("/notes") %}
-
 {% block title %}{{ section.title }} · {{ config.title }}{% endblock title %}
-{% block body_class %}{% if is_notes %}section-notes{% else %}section-posts{% endif %} page-post-listing{% endblock body_class %}
+{% block body_class %}{% if section.path is starting_with("/notes") %}section-notes{% else %}section-posts{% endif %} page-post-listing{% endblock body_class %}
 
 {% block content %}
+{%- set is_notes = section.path is starting_with("/notes") %}
+
 <div class="post-listing">
   <header class="post-listing__head">
     <p class="post-listing__kicker">
